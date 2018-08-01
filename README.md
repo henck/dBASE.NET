@@ -33,3 +33,8 @@ foreach(DbfRecord record in dbf.Records)
   }		  
 }
 ```
+
+## Class diagram
+
+![Class diagram](http://yuml.me/diagram/scruffy/class/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField], [DbfRecord]+->[DbfField], [Dbf]->[DbfHeader], [DbfHeader]^-[Dbf4Header])
+
