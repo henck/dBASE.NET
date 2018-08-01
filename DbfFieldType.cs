@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+	/// <summary>
+	/// Not all types are currently implemented.
+	/// </summary>
 	public enum DbfFieldType
 	{
 		Character = 'C',
