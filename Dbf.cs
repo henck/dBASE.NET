@@ -7,12 +7,28 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
-	// Usage:
-	// Dbf dbf = new Dbf("mydb.dbf");
-	// foreach(DbfRecord record in dbf.Records) {
-	//   record...
-	// }
-
+	/// <summary>
+	/// Loading a .dbf file
+	/// 
+	/// using dBASE.NET;
+	/// ...
+	/// Dbf dbf = new Dbf("mydb.dbf");
+	///
+	/// Looping through fields
+	/// foreach (DbfField field in dbf.Fields)
+	/// {
+	///   Console.WriteLine("Field name: " + field.name);
+	/// }
+	///
+	/// Looping through records
+	/// 
+	/// foreach(DbfRecord record in dbf.Records) 
+	/// {
+	///   foreach (DbfField fld in dbf.Fields) {
+	///     Console.WriteLine(record.Data[fld]);
+	///   }		  
+	/// }
+	/// </summary>
 	public class Dbf
 	{
 		private DbfHeader header;
