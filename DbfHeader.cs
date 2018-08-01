@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+	/// <summary>
+	/// The DbfHeader is an abstract base class for headers of different
+	/// flavors of dBASE files.
+	/// </summary>
 	public abstract class DbfHeader
 	{
 		public DbfVersion Version { get; set; }
@@ -24,7 +28,6 @@ namespace dBASE.NET
 				default:
 					throw new Exception("Unsupported header version.");
 			}
-
 		}
 
 		/// <summary>
