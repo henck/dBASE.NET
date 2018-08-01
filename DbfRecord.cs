@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+	/// <summary>
+	/// DbfRecord encapsulates a record in a .dbf file. It conains a dictionary with
+	/// data (as an Object) for each field.
+	/// </summary>
 	public class DbfRecord
 	{
 		private Dictionary<DbfField, object> data;
