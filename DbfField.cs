@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+	/// <summary>
+	/// Reads a field record from a .dbf file.
+	/// </summary>
 	public class DbfField
 	{
 		public string Name { get; set; }
