@@ -6,17 +6,26 @@ be accessed as lists and looped over.
 
 ## Sample of use
 
-```c#
-// Read a .dbf file into memory.
-Dbf dbf = new Dbf("mydb.dbf");
+### Loading a .dbf file
 
-// Loop through all fields:
+```c#
+using dBASE.NET;
+...
+Dbf dbf = new Dbf("mydb.dbf");
+```
+
+### Looping through fields
+
+```c#
 foreach (DbfField field in dbf.Fields)
 {
-  Console.WriteLine(field.name);
+  Console.WriteLine("Field name: " + field.name);
 }
+```
 
-// Loop through all records:
+### Looping through records
+
+```c#
 foreach(DbfRecord record in dbf.Records) 
 {
   foreach (DbfField fld in dbf.Fields) {
