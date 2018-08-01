@@ -1,6 +1,6 @@
 ﻿# dBASE.NET
 
-_dBASE.NET_ is a simple .NET class library used to load dBASE IV .dbf files. The `Dbf` class reads
+__dBASE.NET__ is a simple .NET class library used to load dBASE IV .dbf files. The `Dbf` class reads
 fields (`DbfField`) and records (`DbfRecord`) from a .dbf file. These fields and records can then
 be accessed as lists and looped over.
 
