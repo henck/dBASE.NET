@@ -38,6 +38,13 @@ namespace dBASE.NET
 				offset += field.Length;
 				string text = Encoding.ASCII.GetString(buffer).Trim();
 
+				// If buffer is empty, when we have a NULL-value.
+				if(text.Length == 0)
+				{
+					data[field] = null;
+					continue;
+				}
+
 				switch (field.Type)
 				{
 					case DbfFieldType.Character:
