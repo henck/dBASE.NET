@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbfRecord.cs" />
-    <Compile Include="Dbf4Header.cs" />
+    <Compile Include="Dbf3Header.cs" />
     <Compile Include="DbfField.cs" />
     <Compile Include="DbfFieldType.cs" />
     <Compile Include="DbfHeader.cs" />

@@ -24,9 +24,9 @@ namespace dBASE.NET
 			switch(version)
 			{
 				case DbfVersion.FoxBaseDBase3NoMemo:
-					return new Dbf4Header();
+					return new Dbf3Header();
 				default:
-					throw new Exception("Unsupported header version.");
+					throw new Exception("Unsupported dBASE version: " + version);
 			}
 		}
 

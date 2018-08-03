@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
-	public class Dbf4Header : DbfHeader
+	public class Dbf3Header : DbfHeader
 	{
 		public override void Read(BinaryReader reader)
 		{
