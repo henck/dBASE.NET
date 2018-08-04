@@ -1,4 +1,5 @@
-﻿using System;
+﻿using dBASE.NET.Decoders;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -16,7 +17,7 @@ namespace dBASE.NET
 	{
 		private Dictionary<DbfField, object> data;
 
-		public DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields)
+		public DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData)
 		{
 			data = new Dictionary<DbfField, object>();
 
@@ -36,35 +37,9 @@ namespace dBASE.NET
 				byte[] buffer = new byte[field.Length];
 				Array.Copy(row, offset, buffer, 0, field.Length);
 				offset += field.Length;
-				string text = Encoding.ASCII.GetString(buffer).Trim();
 
-				// If buffer is empty, when we have a NULL-value.
-				if(text.Length == 0)
-				{
-					data[field] = null;
-					continue;
-				}
-
-				switch (field.Type)
-				{
-					case DbfFieldType.Character:
-						data[field] = text;
-						break;
-					case DbfFieldType.Date:
-						data[field] = DateTime.ParseExact(text, "yyyyMMdd", CultureInfo.InvariantCulture);
-						break;
-					case DbfFieldType.Numeric:
-						data[field] = Convert.ToSingle(text);
-						break;
-					case DbfFieldType.Float:
-						data[field] = Convert.ToSingle(text);
-						break;
-					case DbfFieldType.Logical:
-						data[field] = (buffer[0] == 'Y' || buffer[0] == 'y' || buffer[0] == 'T' || buffer[0] == 't');
-						break;
-					default:
-						throw new Exception("Unsupported field type.");
-				}
+				IDecoder decoder = DecoderFactory.GetDecoder(field.Type);
+				data[field] = decoder.Decode(buffer, memoData);
 			}
 		}
 

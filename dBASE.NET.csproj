@@ -47,6 +47,15 @@
     <Compile Include="DbfHeader.cs" />
     <Compile Include="Dbf.cs" />
     <Compile Include="DbfVersion.cs" />
+    <Compile Include="Decoders\CharacterDecoder.cs" />
+    <Compile Include="Decoders\DateDecoder.cs" />
+    <Compile Include="Decoders\DateTimeDecoder.cs" />
+    <Compile Include="Decoders\DecoderFactory.cs" />
+    <Compile Include="Decoders\IDecoder.cs" />
+    <Compile Include="Decoders\FloatDecoder.cs" />
+    <Compile Include="Decoders\LogicalDecoder.cs" />
+    <Compile Include="Decoders\MemoDecoder.cs" />
+    <Compile Include="Decoders\NumericDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
