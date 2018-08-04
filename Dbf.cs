@@ -42,8 +42,14 @@ namespace dBASE.NET
 			BinaryReader reader = new BinaryReader(stream);
 
 			ReadHeader(reader);
+			byte[] memoData = ReadMemos(path);
 			ReadFields(reader);
-			ReadRecords(reader);
+
+			// After reading the fields, we move the read pointer to the beginning
+			// of the records, as indicated by the "HeaderLength" value in the header.
+			stream.Seek(header.HeaderLength, SeekOrigin.Begin);
+
+			ReadRecords(reader, memoData);
 
 			// Close stream.
 			reader.Close();
@@ -65,6 +71,20 @@ namespace dBASE.NET
 				return records;
 			}
 	  }
+
+		private byte[] ReadMemos(string path)
+		{
+			String memoPath = Path.ChangeExtension(path, "fpt");
+			if (!File.Exists(memoPath)) return null;
+
+			FileStream str = File.Open(memoPath, FileMode.Open, FileAccess.Read);
+			BinaryReader memoReader = new BinaryReader(str);
+			byte[] memoData = new byte[str.Length];
+			memoData = memoReader.ReadBytes((int)str.Length);
+			memoReader.Close();
+			str.Close();
+			return memoData;
+		}
 
 		private void ReadHeader(BinaryReader reader)
 		{
@@ -88,14 +108,14 @@ namespace dBASE.NET
 			reader.ReadByte();
 		}
 
-		private void ReadRecords(BinaryReader reader)
+		private void ReadRecords(BinaryReader reader, byte[] memoData)
 		{
 			records = new List<DbfRecord>();
 
 			// Records are terminated by 0x1a char (officially), or EOF (also seen).
 			while(reader.PeekChar() != 0x1a && reader.PeekChar() != -1)
 			{
-				records.Add(new DbfRecord(reader, header, fields));
+				records.Add(new DbfRecord(reader, header, fields, memoData));
 			}
 		}
 	}
