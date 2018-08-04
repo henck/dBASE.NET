@@ -31,6 +31,10 @@ namespace dBASE.NET
 					return new Dbf3Header();
 				case DbfVersion.FoxPro2WithMemo:
 					return new Dbf3Header();
+				case DbfVersion.FoxBaseDBase3WithMemo:
+					return new Dbf3Header();
+				case DbfVersion.dBase4WithMemo:
+					return new Dbf3Header();
 				default:
 					throw new Exception("Unsupported dBASE version: " + version);
 			}

@@ -75,7 +75,14 @@ namespace dBASE.NET
 		private byte[] ReadMemos(string path)
 		{
 			String memoPath = Path.ChangeExtension(path, "fpt");
-			if (!File.Exists(memoPath)) return null;
+			if (!File.Exists(memoPath))
+			{
+				memoPath = Path.ChangeExtension(path, "dbt");
+				if(!File.Exists(memoPath))
+				{
+					return null;
+				}
+			}
 
 			FileStream str = File.Open(memoPath, FileMode.Open, FileAccess.Read);
 			BinaryReader memoReader = new BinaryReader(str);
