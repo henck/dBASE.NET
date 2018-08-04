@@ -89,7 +89,10 @@ namespace dBASE.NET
 		private void ReadHeader(BinaryReader reader)
 		{
 			// Peek at version number, then try to read correct version header.
-			DbfVersion version = (DbfVersion)reader.PeekChar();
+			
+			byte versionByte = reader.ReadByte();
+			reader.BaseStream.Seek(0, SeekOrigin.Begin);
+			DbfVersion version = (DbfVersion)versionByte;
 			header = DbfHeader.CreateHeader(version);
 			header.Read(reader);
 		}
