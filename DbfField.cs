@@ -17,6 +17,8 @@ namespace dBASE.NET
 		public DbfFieldType Type { get; set; }
 		public byte Length { get; set; }
 		public byte Precision { get; set; }
+		public byte WorkAreaID { get; set; }
+		public byte Flags { get; set; }
 
 		public DbfField(BinaryReader reader)
 		{
@@ -25,7 +27,11 @@ namespace dBASE.NET
 			reader.ReadBytes(4);
 			Length = reader.ReadByte();
 			Precision = reader.ReadByte();
-			reader.ReadBytes(14);
+			reader.ReadBytes(2); // reserved.
+			WorkAreaID = reader.ReadByte();
+			reader.ReadBytes(2); // reserved.
+			Flags = reader.ReadByte();
+			reader.ReadBytes(8);
 		}
 	}
 }

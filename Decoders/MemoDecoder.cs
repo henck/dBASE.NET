@@ -23,15 +23,20 @@ namespace dBASE.NET.Decoders
 
 		public object Decode(byte[] buffer, byte[] memoData)
 		{
-			int index = BitConverter.ToInt32(buffer, 0);
-			if (index != 0)
+			int index = 0;
+			// Memo fields of 5+ byts in length store their index in text, e.g. "     39394"
+			// Memo fields of 4 bytes store their index as an int.
+			if (buffer.Length > 4)
 			{
-				return findMemo(index, memoData);
-			}
-			else
+				string text = Encoding.ASCII.GetString(buffer).Trim();
+				if (text.Length == 0) return null;
+				index = Convert.ToInt32(text);
+			} else
 			{
-				return null;
+				index = BitConverter.ToInt32(buffer, 0);
+				if (index == 0) return null;
 			}
+			return findMemo(index, memoData);
 		}
 
 		private string findMemo(int index, byte[] memoData)

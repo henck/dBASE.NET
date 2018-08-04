@@ -22,6 +22,7 @@ namespace dBASE.NET
 		Logical = 'L',
 		Memo = 'M',
 		General = 'G',
-		Picture = 'P'
+		Picture = 'P',
+		NullFlags = '0'
 	}
 }

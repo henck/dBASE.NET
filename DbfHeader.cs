@@ -27,6 +27,10 @@ namespace dBASE.NET
 					return new Dbf3Header();
 				case DbfVersion.VisualFoxPro:
 					return new Dbf3Header();
+				case DbfVersion.VisualFoxProWithAutoIncrement:
+					return new Dbf3Header();
+				case DbfVersion.FoxPro2WithMemo:
+					return new Dbf3Header();
 				default:
 					throw new Exception("Unsupported dBASE version: " + version);
 			}
