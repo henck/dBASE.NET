@@ -15,11 +15,13 @@ namespace dBASE.NET
 	/// </summary>
 	public class DbfRecord
 	{
-		private Dictionary<DbfField, object> data;
+		private List<DbfField> fields;
+		private object[] data;
 
 		public DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData)
 		{
-			data = new Dictionary<DbfField, object>();
+			this.fields = fields;
+			data = new object[fields.Count];
 
 			// Read record marker.
 			byte marker = reader.ReadByte();
@@ -30,6 +32,7 @@ namespace dBASE.NET
 
 			// Read data for each field.
 			int offset = 0;
+			int index = 0;
 			foreach (DbfField field in fields)
 			{
 				// Copy bytes from record buffer into field buffer, 
@@ -39,14 +42,43 @@ namespace dBASE.NET
 				offset += field.Length;
 
 				IDecoder decoder = DecoderFactory.GetDecoder(field.Type);
-				data[field] = decoder.Decode(buffer, memoData);
+				data[index] = decoder.Decode(buffer, memoData);
+				index++;
 			}
 		}
 
-		public Dictionary<DbfField, object> Data {
+		public object[] Data {
 			get
 			{
 				return data;
+			}
+		}
+
+	  public object this[int index]
+		{
+			get
+			{
+				return data[index];
+			}
+		}
+
+		public object this[string name]
+		{
+			get
+			{
+				int index = fields.FindIndex(x => x.Name.Equals(name));
+				if (index == -1) return null;
+				return data[index];
+			}
+		}
+
+		public object this[DbfField field]
+		{
+			get
+			{
+				int index = fields.IndexOf(field);
+				if (index == -1) return null;
+				return data[index];
 			}
 		}
 	}

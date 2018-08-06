@@ -35,7 +35,29 @@ namespace dBASE.NET
 		private List<DbfField> fields;
 		private List<DbfRecord> records;
 
-		public Dbf(String path)
+		public Dbf()
+		{
+			this.fields = new List<DbfField>();
+			this.records = new List<DbfRecord>();
+		}
+
+		public List<DbfField> Fields
+		{
+			get
+			{
+				return fields;
+			}
+		}
+
+		public List<DbfRecord> Records
+		{
+		  get
+			{
+				return records;
+			}
+	  }
+
+		public void Read(String path)
 		{
 			// Open stream for reading.
 			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
@@ -55,22 +77,6 @@ namespace dBASE.NET
 			reader.Close();
 			stream.Close();
 		}
-
-		public List<DbfField> Fields
-		{
-			get
-			{
-				return fields;
-			}
-		}
-
-		public List<DbfRecord> Records
-		{
-		  get
-			{
-				return records;
-			}
-	  }
 
 		private byte[] ReadMemos(string path)
 		{
@@ -96,7 +102,6 @@ namespace dBASE.NET
 		private void ReadHeader(BinaryReader reader)
 		{
 			// Peek at version number, then try to read correct version header.
-			
 			byte versionByte = reader.ReadByte();
 			reader.BaseStream.Seek(0, SeekOrigin.Begin);
 			DbfVersion version = (DbfVersion)versionByte;
@@ -106,7 +111,7 @@ namespace dBASE.NET
 
 		private void ReadFields(BinaryReader reader)
 		{
-			fields = new List<DbfField>();
+			fields.Clear();
 
 			// Fields are terminated by 0x0d char.
 			while(reader.PeekChar() != 0x0d)
@@ -120,7 +125,7 @@ namespace dBASE.NET
 
 		private void ReadRecords(BinaryReader reader, byte[] memoData)
 		{
-			records = new List<DbfRecord>();
+			records.Clear();
 
 			// Records are terminated by 0x1a char (officially), or EOF (also seen).
 			while(reader.PeekChar() != 0x1a && reader.PeekChar() != -1)
