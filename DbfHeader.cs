@@ -13,10 +13,29 @@ namespace dBASE.NET
 	/// </summary>
 	public abstract class DbfHeader
 	{
+		/// <summary>
+		/// dBASE version
+		/// </summary>
 		public DbfVersion Version { get; set; }
+
+		/// <summary>
+		/// Date of last update.
+		/// </summary>
 		public DateTime LastUpdate { get; set;  }
+
+		/// <summary>
+		/// Number of records in the file.
+		/// </summary>
 		public uint NumRecords { get; set; }
+
+		/// <summary>
+		///  Header length in bytes. The records start at this offset in the .dbf file.
+		/// </summary>
 		public ushort HeaderLength { get; set; }
+
+		/// <summary>
+		/// Record length in bytes.
+		/// </summary>
 		public ushort RecordLength { get; set; }
 
 		public static DbfHeader CreateHeader(DbfVersion version)
@@ -36,7 +55,7 @@ namespace dBASE.NET
 				case DbfVersion.dBase4WithMemo:
 					return new Dbf3Header();
 				default:
-					throw new Exception("Unsupported dBASE version: " + version);
+					throw new ArgumentException("Unsupported dBASE version: " + version);
 			}
 		}
 

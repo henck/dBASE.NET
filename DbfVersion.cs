@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
-	/// <summary>
-	/// Initial implementation supports version 0x03 only.
-	/// </summary>
 	public enum DbfVersion
 	{
 		Unknown = 0,
