@@ -33,7 +33,7 @@ namespace dBASE.NET.Decoders
 				case DbfFieldType.Numeric:
 					return NumericDecoder.Instance;
 				default:
-					throw new Exception("No decoder found for dBASE type " + type);
+					throw new ArgumentException("No decoder found for dBASE type " + type);
 			}
 		}
 	}
