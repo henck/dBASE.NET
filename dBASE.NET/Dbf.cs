@@ -8,26 +8,8 @@ using System.Threading.Tasks;
 namespace dBASE.NET
 {
 	/// <summary>
-	/// Loading a .dbf file
-	/// 
-	/// using dBASE.NET;
-	/// ...
-	/// Dbf dbf = new Dbf("mydb.dbf");
-	///
-	/// Looping through fields
-	/// foreach (DbfField field in dbf.Fields)
-	/// {
-	///   Console.WriteLine("Field name: " + field.name);
-	/// }
-	///
-	/// Looping through records
-	/// 
-	/// foreach(DbfRecord record in dbf.Records) 
-	/// {
-	///   foreach (DbfField fld in dbf.Fields) {
-	///     Console.WriteLine(record.Data[fld]);
-	///   }		  
-	/// }
+	/// The Dbf class encapsulated a dBASE table (.dbf) file, allowing
+	/// reading from disk, writing to disk, enumerating fields and enumerating records.
 	/// </summary>
 	public class Dbf
 	{

@@ -1,38 +1,51 @@
-﻿# dBASE.NET
+﻿# dBASE.NET - Read and write DBF files with .NET
 
-__dBASE.NET__ is a simple .NET class library used to load dBASE IV .dbf files. The `Dbf` class reads
-fields (`DbfField`) and records (`DbfRecord`) from a .dbf file. These fields and records can then
-be accessed as lists and looped over.
+__dBASE.NET__ is a .NET class library used to read FoxBase, dBASE III and dBASE IV .dbf files. Data read
+from a file is returned as a list of typed fields and a list of records. This library is useful to add
+data import from dBASE sources to a .NET project.
 
-## Sample of use
+This code has been tested against a number of dBASE files found in the wild, including FoxBase and dBASE III/IV
+files with and without memo files. A .NET unit test project is part of this repository and new test files
+may be added to it over time.
 
-### Loading a .dbf file
+## Installing dBASE.NET
+
+...
+
+## Introduction
+
+### Opening a DBF file
 
 ```c#
 using dBASE.NET;
-...
-Dbf dbf = new Dbf("mydb.dbf");
+
+dbf.Read("database.dbf");
 ```
 
-### Looping through fields
+This returns an instance of the `Dbf` class. With this, you can iterate over fields found in the table:
 
 ```c#
-foreach (DbfField field in dbf.Fields)
-{
-  Console.WriteLine("Field name: " + field.name);
+foreach(DbfField field in dbf.Fields) {
+	Console.WriteLine(field.Name);
 }
 ```
 
-### Looping through records
+You can also iterate over records:
 
 ```c#
-foreach(DbfRecord record in dbf.Records) 
-{
-  foreach (DbfField fld in dbf.Fields) {
-    Console.WriteLine(record.Data[fld]);
-  }		  
+foreach(DbfRecord record in dbf.Records) {
+	for(int i = 0;  i < dbf.Fields.Count; i++) {
+		Console.WriteLine(record[i]);
+	}
 }
 ```
+
+Count the records:
+
+```c#
+Console.WriteLine(dbf.Records.Count);
+```
+
 
 ## Class diagram
 
