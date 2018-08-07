@@ -62,12 +62,6 @@
     <Compile Include="Writing.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dbase.NET\dBASE.NET.csproj">
-      <Project>{6d931bbd-e331-4a20-90e8-ff7bb2a46e8f}</Project>
-      <Name>dBASE.NET</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="fixtures\cp1251.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -247,6 +241,12 @@
     <Content Include="fixtures\f5\dbase_f5.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dBASE.NET\dBASE.NET.csproj">
+      <Project>{6d931bbd-e331-4a20-90e8-ff7bb2a46e8f}</Project>
+      <Name>dBASE.NET</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
