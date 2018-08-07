@@ -8,6 +8,8 @@ This code has been tested against a number of dBASE files found in the wild, inc
 files with and without memo files. A .NET unit test project is part of this repository and new test files
 may be added to it over time.
 
+There is [an article describing the dBASE file format](http://www.independent-software.com/dbase-dbf-dbt-file-format.html).
+
 ## Installing dBASE.NET
 
 dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
