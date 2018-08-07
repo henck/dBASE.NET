@@ -1,2 +1,0 @@
-﻿* [Flags] enums
-* Generics
