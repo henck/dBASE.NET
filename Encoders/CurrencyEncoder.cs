@@ -23,7 +23,9 @@ namespace dBASE.NET.Encoders
 
 		public byte[] Encode(DbfField field, object data)
 		{
-			return null;
+			float value = 0;
+			if (data != null) value = (float)data;
+			return BitConverter.GetBytes(value);
 		}
 	}
 }

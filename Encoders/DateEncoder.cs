@@ -23,7 +23,14 @@ namespace dBASE.NET.Encoders
 
 		public byte[] Encode(DbfField field, object data)
 		{
-			return null;
+			string text = new string(' ', field.Length);
+			if (data != null)
+			{
+				DateTime dt = (DateTime) data;
+				text = String.Format("{0:d4}{1:d2}{2:d2}", dt.Year, dt.Month, dt.Day).PadLeft(field.Length, ' ');
+			}
+
+			return Encoding.ASCII.GetBytes(text);
 		}
 	}
 }

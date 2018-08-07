@@ -23,7 +23,9 @@ namespace dBASE.NET.Decoders
 
 		public object Decode(byte[] buffer, byte[] memoData)
 		{
-			return (buffer[0] == 'Y' || buffer[0] == 'y' || buffer[0] == 'T' || buffer[0] == 't');
+			string text = Encoding.ASCII.GetString(buffer).Trim().ToUpper();
+			if (text == "?") return null;
+			return (text == "Y" || text == "T");
 		}
 	}
 }

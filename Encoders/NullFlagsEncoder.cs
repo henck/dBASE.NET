@@ -23,7 +23,9 @@ namespace dBASE.NET.Encoders
 
 		public byte[] Encode(DbfField field, object data)
 		{
-			return null;
+			byte[] buffer = new byte[1];
+			buffer[0] = 0;
+			return buffer;
 		}
 	}
 }

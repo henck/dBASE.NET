@@ -23,7 +23,17 @@ namespace dBASE.NET.Encoders
 
 		public byte[] Encode(DbfField field, object data)
 		{
-			return null;
+			// Convert boolean value to string.
+			string text = "?";
+			if(data != null) { 
+				text = (bool)data == true ? "Y" : "N";
+		  }
+
+		  // Grow string to fill field length.
+		  text = text.PadLeft(field.Length, ' ');
+
+			// Convert string to byte array.
+			return Encoding.ASCII.GetBytes(text);
 		}
 	}
 }
