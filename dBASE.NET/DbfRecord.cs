@@ -1,5 +1,4 @@
-﻿using dBASE.NET.Decoders;
-using dBASE.NET.Encoders;
+﻿using dBASE.NET.Encoders;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -40,8 +39,8 @@ namespace dBASE.NET
 				Array.Copy(row, offset, buffer, 0, field.Length);
 				offset += field.Length;
 
-				IDecoder decoder = DecoderFactory.GetDecoder(field.Type);
-				data.Add(decoder.Decode(buffer, memoData));
+				IEncoder encoder = EncoderFactory.GetEncoder(field.Type);
+				data.Add(encoder.Decode(buffer, memoData));
 			}
 		}
 

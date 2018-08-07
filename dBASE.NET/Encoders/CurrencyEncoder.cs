@@ -27,5 +27,10 @@ namespace dBASE.NET.Encoders
 			if (data != null) value = (float)data;
 			return BitConverter.GetBytes(value);
 		}
-	}
+
+        public object Decode(byte[] buffer, byte[] memoData)
+        {
+            return BitConverter.ToSingle(buffer, 0);
+        }
+    }
 }

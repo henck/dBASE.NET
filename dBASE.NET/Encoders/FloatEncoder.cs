@@ -27,5 +27,12 @@ namespace dBASE.NET.Encoders
 			if (text.Length > field.Length) text.Substring(0, field.Length);
 			return Encoding.ASCII.GetBytes(text);
 		}
-	}
+
+        public object Decode(byte[] buffer, byte[] memoData)
+        {
+            string text = Encoding.ASCII.GetString(buffer).Trim();
+            if (text.Length == 0) return null;
+            return Convert.ToSingle(text);
+        }
+    }
 }

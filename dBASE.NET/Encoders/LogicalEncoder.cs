@@ -35,5 +35,12 @@ namespace dBASE.NET.Encoders
 			// Convert string to byte array.
 			return Encoding.ASCII.GetBytes(text);
 		}
-	}
+
+        public object Decode(byte[] buffer, byte[] memoData)
+        {
+            string text = Encoding.ASCII.GetString(buffer).Trim().ToUpper();
+            if (text == "?") return null;
+            return (text == "Y" || text == "T");
+        }
+    }
 }

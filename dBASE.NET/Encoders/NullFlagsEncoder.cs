@@ -27,5 +27,10 @@ namespace dBASE.NET.Encoders
 			buffer[0] = 0;
 			return buffer;
 		}
-	}
+
+        public object Decode(byte[] buffer, byte[] memoData)
+        {
+            return buffer[0];
+        }
+    }
 }

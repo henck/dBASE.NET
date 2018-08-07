@@ -9,5 +9,6 @@ namespace dBASE.NET.Encoders
 	internal interface IEncoder
 	{
 		byte[] Encode(DbfField field, object data);
-	}
+        object Decode(byte[] buffer, byte[] memoData);
+    }
 }
