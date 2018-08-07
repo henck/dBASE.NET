@@ -10,11 +10,22 @@ may be added to it over time.
 
 ## Installing dBASE.NET
 
-...
+dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
 
-## Introduction
+* Package manager:
 
-### Opening a DBF file
+    PM> Install-Package dBASE.NET -Version 1.0.0 
+
+* .NET CLI:
+
+    > dotnet add package dBASE.NET --version 1.0.0 
+   
+* Paket CLI:
+
+    > paket add dBASE.NET --version 1.0.0 
+
+
+## Opening a DBF file
 
 ```c#
 using dBASE.NET;
@@ -45,6 +56,39 @@ Count the records:
 ```c#
 Console.WriteLine(dbf.Records.Count);
 ```
+
+## Working with memo files
+
+When memo file accompanying the `.dbf` file is found (either `.dbt` or `.fpt`), with the same base name as the table file, then 
+dBASE.NET will load the memo file's contents. 
+
+## Writing a DBF file
+
+To write DBF data, you can either create a new instance of `Dbf`, then create fields and records, or load an existing table and modify its fields or records.
+
+This sample code creates a new table with a single character field, then saves the .dbf file:
+
+```c#
+dbf = new Dbf();
+DbfField field = new DbfField("TEST", DbfFieldType.Character, 12);
+dbf.Fields.Add(field);
+DbfRecord record = dbf.CreateRecord();
+record.Data[0] = "HELLO";
+dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
+```
+
+## Supported Field types
+
+| Code | Field type   | .NET counterpart |
+|:-----|:-------------|:-----------------|
+| `C`  | Character string | String |
+| `D`  | Date             | DateTime |
+| `I`  | Integer          | Int32 |
+| `L`  | Logical          | Bool |
+| `M`  | Memo             | String |
+| `N`  | Numeric          | Float |
+| `T`  | DateTime         | DateTime |
+| `Y`  | Currency         | Float |
 
 
 ## Class diagram
