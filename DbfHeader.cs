@@ -40,29 +40,43 @@ namespace dBASE.NET
 
 		public static DbfHeader CreateHeader(DbfVersion version)
 		{
+			DbfHeader header;
 			switch(version)
 			{
 				case DbfVersion.FoxBaseDBase3NoMemo:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				case DbfVersion.VisualFoxPro:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				case DbfVersion.VisualFoxProWithAutoIncrement:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				case DbfVersion.FoxPro2WithMemo:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				case DbfVersion.FoxBaseDBase3WithMemo:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				case DbfVersion.dBase4WithMemo:
-					return new Dbf3Header();
+					header = new Dbf3Header();
+					break;
 				default:
 					throw new ArgumentException("Unsupported dBASE version: " + version);
 			}
+
+			header.Version = version;
+			return header;
 		}
 
 		/// <summary>
-		/// Read the .dbf file header. 
+		/// Read the .dbf file header from the specified reader.
 		/// </summary>
-		/// <param name="reader"></param>
-		public abstract void Read(BinaryReader reader);
+		internal abstract void Read(BinaryReader reader);
+
+		/// <summary>
+		/// Write a .dbf file header to the specified writer.
+		/// </summary>
+		internal abstract void Write(BinaryWriter writer, List<DbfField> fields, List<DbfRecord> records);
 	}
 }

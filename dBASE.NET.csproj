@@ -59,6 +59,18 @@
     <Compile Include="Decoders\MemoDecoder.cs" />
     <Compile Include="Decoders\NullFlagsDecoder.cs" />
     <Compile Include="Decoders\NumericDecoder.cs" />
+    <Compile Include="Encoders\CharacterEncoder.cs" />
+    <Compile Include="Encoders\CurrencyEncoder.cs" />
+    <Compile Include="Encoders\DateEncoder.cs" />
+    <Compile Include="Encoders\DateTimeEncoder.cs" />
+    <Compile Include="Encoders\EncoderFactory.cs" />
+    <Compile Include="Encoders\FloatEncoder.cs" />
+    <Compile Include="Encoders\IEncoder.cs" />
+    <Compile Include="Encoders\IntegerEncoder.cs" />
+    <Compile Include="Encoders\LogicalEncoder.cs" />
+    <Compile Include="Encoders\MemoEncoder.cs" />
+    <Compile Include="Encoders\NullFlagsEncoder.cs" />
+    <Compile Include="Encoders\NumericEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

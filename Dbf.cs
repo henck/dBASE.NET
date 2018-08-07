@@ -37,6 +37,7 @@ namespace dBASE.NET
 
 		public Dbf()
 		{
+			this.header = DbfHeader.CreateHeader(DbfVersion.FoxBaseDBase3NoMemo);
 			this.fields = new List<DbfField>();
 			this.records = new List<DbfRecord>();
 		}
@@ -56,6 +57,13 @@ namespace dBASE.NET
 				return records;
 			}
 	  }
+
+		public DbfRecord CreateRecord()
+		{
+			DbfRecord record = new DbfRecord(fields);
+			this.records.Add(record);
+			return record;
+		}
 
 		public void Read(String path)
 		{
@@ -132,6 +140,43 @@ namespace dBASE.NET
 			{
 				records.Add(new DbfRecord(reader, header, fields, memoData));
 			}
+		}
+
+		public void Write(String path, DbfVersion version = DbfVersion.Unknown)
+		{
+			// Use version specified. If unknown specified, use current header version.
+			if (version != DbfVersion.Unknown) header.Version = version;
+			header = DbfHeader.CreateHeader(header.Version);
+
+			FileStream stream = File.Open(path, FileMode.Create, FileAccess.Write);
+			BinaryWriter writer = new BinaryWriter(stream);
+
+			header.Write(writer, fields, records);
+			WriteFields(writer);
+			WriteRecords(writer);
+
+			writer.Close();
+			stream.Close();
+		}
+
+		private void WriteFields(BinaryWriter writer)
+		{
+			foreach(DbfField field in fields)
+			{
+				field.Write(writer);
+			}
+			// Write field descriptor array terminator.
+			writer.Write((byte)0x0d);
+		}
+
+		private void WriteRecords(BinaryWriter writer)
+		{
+			foreach(DbfRecord record in records)
+			{
+				record.Write(writer);
+			}
+			// Write EOF character.
+			writer.Write((byte)0x1a);
 		}
 	}
 }
