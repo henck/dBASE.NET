@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Dbase.NET")]
-[assembly: AssemblyDescription("dBASE.NET is a simple .NET class library used to load dBASE IV .dbf files. The Dbf class reads fields (DbfField) and records (DbfRecord) from a .dbf file. These fields and records can then be accessed as lists and looped over.")]
+[assembly: AssemblyDescription("dBASE.NET is a .NET class library used to load dBASE IV .dbf files. The Dbf class reads fields (DbfField) and records (DbfRecord) from a .dbf file. These fields and records can then be accessed as lists and looped over.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Independent Software / Alexander van Oostenrijk")]
 [assembly: AssemblyProduct("Dbase.NET")]

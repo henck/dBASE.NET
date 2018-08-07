@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("dBASE.NET.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Unit test suite for dBASE.NET")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("dBASE.NET.Tests")]
+[assembly: AssemblyCompany("Independent Software / Alexander van Oostenrijk")]
+[assembly: AssemblyProduct("dBASE.NET")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
