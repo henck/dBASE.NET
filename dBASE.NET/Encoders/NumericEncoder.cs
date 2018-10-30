@@ -23,7 +23,7 @@ namespace dBASE.NET.Encoders
 
 		public byte[] Encode(DbfField field, object data)
 		{
-			string text = Convert.ToString(data).PadLeft(field.Length, ' ');
+      string text = Convert.ToString(data, System.Globalization.CultureInfo.InvariantCulture).PadLeft(field.Length, ' ');      
 			if (text.Length > field.Length) text.Substring(0, field.Length);
 			return Encoding.ASCII.GetBytes(text);
 		}
@@ -32,7 +32,7 @@ namespace dBASE.NET.Encoders
         {
             string text = Encoding.ASCII.GetString(buffer).Trim();
             if (text.Length == 0) return null;
-            return Convert.ToSingle(text);
+            return Convert.ToSingle(text, System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }
