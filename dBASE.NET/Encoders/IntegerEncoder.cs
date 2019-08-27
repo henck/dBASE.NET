@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	public class IntegerEncoder: IEncoder
-	{
-		private static IntegerEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private IntegerEncoder() { }
+    public class IntegerEncoder : IEncoder
+    {
+        private static IntegerEncoder instance = null;
 
-		public static IntegerEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new IntegerEncoder();
-				return instance;
-			}
-		}
+        private IntegerEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			int value = 0;
-			if (data != null) value = (int)data;
-			return BitConverter.GetBytes(value);
-		}
+        public static IntegerEncoder Instance
+        {
+            get
+            {
+                if (instance == null) instance = new IntegerEncoder();
+                return instance;
+            }
+        }
 
-        public object Decode(byte[] buffer, byte[] memoData)
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            int value = 0;
+            if (data != null) value = (int)data;
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
             return BitConverter.ToInt32(buffer, 0);
         }

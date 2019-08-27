@@ -1,36 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class FloatEncoder: IEncoder
-	{
-		private static FloatEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private FloatEncoder() { }
+    internal class FloatEncoder : IEncoder
+    {
+        private static FloatEncoder instance = null;
 
-		public static FloatEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new FloatEncoder();
-				return instance;
-			}
-		}
+        private FloatEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			string text = Convert.ToString(data).PadLeft(field.Length, ' ');
-			if (text.Length > field.Length) text.Substring(0, field.Length);
-			return Encoding.ASCII.GetBytes(text);
-		}
-
-        public object Decode(byte[] buffer, byte[] memoData)
+        public static FloatEncoder Instance
         {
-            string text = Encoding.ASCII.GetString(buffer).Trim();
+            get
+            {
+                if (instance == null) instance = new FloatEncoder();
+                return instance;
+            }
+        }
+
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            string text = Convert.ToString(data).PadLeft(field.Length, ' ');
+            if (text.Length > field.Length) text.Substring(0, field.Length);
+            return encoding.GetBytes(text);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
+        {
+            string text = encoding.GetString(buffer).Trim();
             if (text.Length == 0) return null;
             return Convert.ToSingle(text);
         }

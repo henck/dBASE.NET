@@ -1,34 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-  internal	class NullFlagsEncoder: IEncoder
-	{
-		private static NullFlagsEncoder instance = null;
+    using System.Text;
 
-		private NullFlagsEncoder() { }
+    internal class NullFlagsEncoder : IEncoder
+    {
+        private static NullFlagsEncoder instance = null;
 
-		public static NullFlagsEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new NullFlagsEncoder();
-				return instance;
-			}
-		}
+        private NullFlagsEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			byte[] buffer = new byte[1];
-			buffer[0] = 0;
-			return buffer;
-		}
+        public static NullFlagsEncoder Instance
+        {
+            get
+            {
+                if (instance == null) instance = new NullFlagsEncoder();
+                return instance;
+            }
+        }
 
-        public object Decode(byte[] buffer, byte[] memoData)
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            byte[] buffer = new byte[1];
+            buffer[0] = 0;
+            return buffer;
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
             return buffer[0];
         }

@@ -1,44 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class LogicalEncoder: IEncoder
-	{
-		private static LogicalEncoder instance = null;
+    using System.Text;
 
-		private LogicalEncoder() { }
+    internal class LogicalEncoder : IEncoder
+    {
+        private static LogicalEncoder instance = null;
 
-		public static LogicalEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new LogicalEncoder();
-				return instance;
-			}
-		}
+        private LogicalEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			// Convert boolean value to string.
-			string text = "?";
-			if(data != null) { 
-				text = (bool)data == true ? "Y" : "N";
-		  }
-
-		  // Grow string to fill field length.
-		  text = text.PadLeft(field.Length, ' ');
-
-			// Convert string to byte array.
-			return Encoding.ASCII.GetBytes(text);
-		}
-
-        public object Decode(byte[] buffer, byte[] memoData)
+        public static LogicalEncoder Instance
         {
-            string text = Encoding.ASCII.GetString(buffer).Trim().ToUpper();
+            get
+            {
+                if (instance == null) instance = new LogicalEncoder();
+                return instance;
+            }
+        }
+
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            // Convert boolean value to string.
+            string text = "?";
+            if (data != null)
+            {
+                text = (bool)data == true ? "Y" : "N";
+            }
+
+            // Grow string to fill field length.
+            text = text.PadLeft(field.Length, ' ');
+
+            // Convert string to byte array.
+            return encoding.GetBytes(text);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
+        {
+            string text = encoding.GetString(buffer).Trim().ToUpper();
             if (text == "?") return null;
             return (text == "Y" || text == "T");
         }

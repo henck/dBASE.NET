@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class CurrencyEncoder: IEncoder
-	{
-		private static CurrencyEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private CurrencyEncoder() { }
+    internal class CurrencyEncoder : IEncoder
+    {
+        private static CurrencyEncoder instance = null;
 
-		public static CurrencyEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new CurrencyEncoder();
-				return instance;
-			}
-		}
+        private CurrencyEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			float value = 0;
-			if (data != null) value = (float)data;
-			return BitConverter.GetBytes(value);
-		}
+        public static CurrencyEncoder Instance
+        {
+            get
+            {
+                if (instance == null) instance = new CurrencyEncoder();
+                return instance;
+            }
+        }
 
-        public object Decode(byte[] buffer, byte[] memoData)
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            float value = 0;
+            if (data != null) value = (float)data;
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
             return BitConverter.ToSingle(buffer, 0);
         }
