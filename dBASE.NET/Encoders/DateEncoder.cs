@@ -1,44 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class DateEncoder: IEncoder
-	{
-		private static DateEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private DateEncoder() { }
+    internal class DateEncoder : IEncoder
+    {
+        private static DateEncoder instance = null;
 
-		public static DateEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new DateEncoder();
-				return instance;
-			}
-		}
+        private DateEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			string text = new string(' ', field.Length);
-			if (data != null)
-			{
-				DateTime dt = (DateTime) data;
-				text = String.Format("{0:d4}{1:d2}{2:d2}", dt.Year, dt.Month, dt.Day).PadLeft(field.Length, ' ');
-			}
-
-			return Encoding.ASCII.GetBytes(text);
-		}
-
-        public object Decode(byte[] buffer, byte[] memoData)
+        public static DateEncoder Instance
         {
-            string text = Encoding.ASCII.GetString(buffer).Trim();
+            get
+            {
+                if (instance == null) instance = new DateEncoder();
+                return instance;
+            }
+        }
+
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            string text = new string(' ', field.Length);
+            if (data != null)
+            {
+                DateTime dt = (DateTime)data;
+                text = String.Format("{0:d4}{1:d2}{2:d2}", dt.Year, dt.Month, dt.Day).PadLeft(field.Length, ' ');
+            }
+
+            return encoding.GetBytes(text);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
+        {
+            string text = encoding.GetString(buffer).Trim();
             if (text.Length == 0) return null;
             return DateTime.ParseExact(text, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }
-

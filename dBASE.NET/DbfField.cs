@@ -1,76 +1,78 @@
-﻿using dBASE.NET;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET
+﻿namespace dBASE.NET
 {
-	/// <summary>
-	/// Encapsulates a field descriptor in a .dbf file.
-	/// </summary>
-	public class DbfField
-	{
-		/// <summary>
-		/// Field name
-		/// </summary>
-		public string Name { get; set; }
+    using System;
+    using System.IO;
+    using System.Text;
 
-		/// <summary>
-		/// Field type
-		/// </summary>
-		public DbfFieldType Type { get; set; }
+    /// <summary>
+    /// Encapsulates a field descriptor in a .dbf file.
+    /// </summary>
+    public class DbfField
+    {
+        /// <summary>
+        /// Field name
+        /// </summary>
+        public string Name { get; set; }
 
-		/// <summary>
-		/// Length of field in bytes
-		/// </summary>
-		public byte Length { get; set; }
+        /// <summary>
+        /// Field type
+        /// </summary>
+        public DbfFieldType Type { get; set; }
 
-		public byte Precision { get; set; }
-		public byte WorkAreaID { get; set; }
-		public byte Flags { get; set; }
+        /// <summary>
+        /// Length of field in bytes
+        /// </summary>
+        public byte Length { get; set; }
 
-		public DbfField(string name, DbfFieldType type, byte length)
-		{
-			this.Name = name;
-			this.Type = type;
-			this.Length = length;
-			this.Precision = 0;
-			this.WorkAreaID = 0;
-			this.Flags = 0;
-		}
+        public byte Precision { get; set; }
 
-		internal DbfField(BinaryReader reader)
-		{
-			Name = Encoding.ASCII.GetString(reader.ReadBytes(11)).TrimEnd((Char)0);
-			Type = (DbfFieldType) reader.ReadByte();
-			reader.ReadBytes(4);
-			Length = reader.ReadByte();
-			Precision = reader.ReadByte();
-			reader.ReadBytes(2); // reserved.
-			WorkAreaID = reader.ReadByte();
-			reader.ReadBytes(2); // reserved.
-			Flags = reader.ReadByte();
-			reader.ReadBytes(8);
-		}
+        public byte WorkAreaID { get; set; }
 
-		internal void Write(BinaryWriter writer)
-		{
-			// Pad field name with 0-bytes, then save it.
-			string name = this.Name;
-			if (name.Length > 11) name = name.Substring(0, 11);
-			while (name.Length < 11) name += '\0';
-			byte[] nameBytes = Encoding.ASCII.GetBytes(name);
-			writer.Write(nameBytes);
+        public byte Flags { get; set; }
 
-			writer.Write((char)Type);
-			writer.Write((uint)0); // 4 reserved bytes.
-			writer.Write(Length);
-			writer.Write(Precision);
+        public DbfField(string name, DbfFieldType type, byte length, byte precision = 0)
+        {
+            this.Name = name;
+            this.Type = type;
+            this.Length = length;
+            this.Precision = precision;
+            this.WorkAreaID = 0;
+            this.Flags = 0;
+        }
 
-			for (int i = 0; i < 14; i++) writer.Write((byte)0); // 14 reserved bytes.
-		}
-	}
+        internal DbfField(BinaryReader reader, Encoding encoding)
+        {
+            Name = encoding.GetString(reader.ReadBytes(11)).TrimEnd((Char)0);
+            Type = (DbfFieldType)reader.ReadByte();
+            reader.ReadBytes(4); // reserved: Field data address in memory.
+            Length = reader.ReadByte();
+            Precision = reader.ReadByte();
+            reader.ReadBytes(2); // reserved.
+            WorkAreaID = reader.ReadByte();
+            reader.ReadBytes(2); // reserved.
+            Flags = reader.ReadByte();
+            reader.ReadBytes(8);
+        }
+
+        internal void Write(BinaryWriter writer, Encoding encoding)
+        {
+            // Pad field name with 0-bytes, then save it.
+            string name = this.Name;
+            if (name.Length > 11) name = name.Substring(0, 11);
+            while (name.Length < 11) name += '\0';
+            byte[] nameBytes = encoding.GetBytes(name);
+            writer.Write(nameBytes); // 11 bytes.
+
+            writer.Write((char)Type);
+            writer.Write((uint)0); // 4 reserved bytes: Field data address in memory.
+            writer.Write(Length);
+            writer.Write(Precision);
+            writer.Write((ushort)0); // 2 reserved byte.
+            writer.Write(WorkAreaID);
+            writer.Write((ushort)0); // 2 reserved byte.
+            writer.Write(Flags);
+
+            for (int i = 0; i < 8; i++) writer.Write((byte)0); // 8 reserved bytes.
+        }
+    }
 }

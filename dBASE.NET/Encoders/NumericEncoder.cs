@@ -1,38 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class NumericEncoder: IEncoder
-	{
-		private static NumericEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private NumericEncoder() { }
+    internal class NumericEncoder : IEncoder
+    {
+        private static NumericEncoder instance = null;
 
-		public static NumericEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new NumericEncoder();
-				return instance;
-			}
-		}
+        private NumericEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-      string text = Convert.ToString(data, System.Globalization.CultureInfo.InvariantCulture).PadLeft(field.Length, ' ');      
-			if (text.Length > field.Length) text.Substring(0, field.Length);
-			return Encoding.ASCII.GetBytes(text);
-		}
-
-        public object Decode(byte[] buffer, byte[] memoData)
+        public static NumericEncoder Instance
         {
-            string text = Encoding.ASCII.GetString(buffer).Trim();
+            get
+            {
+                if (instance == null) instance = new NumericEncoder();
+                return instance;
+            }
+        }
+
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            string text = Convert.ToString(data, System.Globalization.CultureInfo.InvariantCulture).PadLeft(field.Length, ' ');
+            if (text.Length > field.Length) text.Substring(0, field.Length);
+            return encoding.GetBytes(text);
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
+        {
+            string text = encoding.GetString(buffer).Trim();
             if (text.Length == 0) return null;
-            return Convert.ToSingle(text, System.Globalization.CultureInfo.InvariantCulture);
+            return Convert.ToDouble(text, System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }

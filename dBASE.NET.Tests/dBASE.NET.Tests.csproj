@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CustomEncoding.cs" />
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
     <Compile Include="DBase4WithMemo.cs" />
@@ -90,6 +91,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="fixtures\8b\dbase_8b_summary.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fixtures\CP866\SPXXXX0159.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="fixtures\f5\dbase_f5_summary.txt">
@@ -251,6 +255,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

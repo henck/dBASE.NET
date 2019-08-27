@@ -1,58 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace dBASE.NET.Encoders
+﻿namespace dBASE.NET.Encoders
 {
-	internal class DateTimeEncoder: IEncoder
-	{
-		private static DateTimeEncoder instance = null;
+    using System;
+    using System.Text;
 
-		private DateTimeEncoder() { }
+    internal class DateTimeEncoder : IEncoder
+    {
+        private static DateTimeEncoder instance = null;
 
-		public static DateTimeEncoder Instance
-		{
-			get
-			{
-				if (instance == null) instance = new DateTimeEncoder();
-				return instance;
-			}
-		}
+        private DateTimeEncoder() { }
 
-		public byte[] Encode(DbfField field, object data)
-		{
-			if (field.Length != 8) throw new ArgumentException("DateTime fields must always be 8 bytes in length.");
+        public static DateTimeEncoder Instance
+        {
+            get
+            {
+                if (instance == null) instance = new DateTimeEncoder();
+                return instance;
+            }
+        }
 
-			// Null values result in zeroes.
-			if (data == null) return new byte[field.Length];
+        /// <inheritdoc />
+        public byte[] Encode(DbfField field, object data, Encoding encoding)
+        {
+            if (field.Length != 8) throw new ArgumentException("DateTime fields must always be 8 bytes in length.");
 
-			// The date gets encoded as a Julian Day.
-			DateTime dt = (DateTime)data;
-			ulong date = DateToJulian(dt);
+            // Null values result in zeroes.
+            if (data == null) return new byte[field.Length];
 
-			// The time gets encoded as number of milliseconds since midnight.
-			ulong time = (ulong)(dt.Hour * 3600000 + dt.Minute * 60000 + dt.Second * 1000);
+            // The date gets encoded as a Julian Day.
+            DateTime dt = (DateTime)data;
+            ulong date = DateToJulian(dt);
 
-			// Time is shifted to be the high double-word.
-			for (int i = 0; i < 32; i++) time = time * 2;
+            // The time gets encoded as number of milliseconds since midnight.
+            ulong time = (ulong)(dt.Hour * 3600000 + dt.Minute * 60000 + dt.Second * 1000);
 
-			// Date and time are encoded as two uint32 double words.
-			return BitConverter.GetBytes(date + time);
-		}
+            // Time is shifted to be the high double-word.
+            for (int i = 0; i < 32; i++) time = time * 2;
 
-		/// <summary>
-		/// Convert a .NET DateTime structure to a Julian Day Number as long
-		/// Implemented from pseudo code at http://en.wikipedia.org/wiki/Julian_day
-		/// </summary>
-		private static ulong DateToJulian(DateTime date)
-		{
-			ulong jdn = (ulong) ((1461 * (date.Year + 4800 + (date.Month - 14)/ 12))/ 4 + (367 * (date.Month - 2 - 12 * ((date.Month - 14)/ 12)))/ 12 - (3 * ((date.Year + 4900 + (date.Month - 14) / 12) / 100))/ 4 + date.Day - 32075);
-			return jdn;
-		}
+            // Date and time are encoded as two uint32 double words.
+            return BitConverter.GetBytes(date + time);
+        }
 
-        public object Decode(byte[] buffer, byte[] memoData)
+        /// <summary>
+        /// Convert a .NET DateTime structure to a Julian Day Number as long
+        /// Implemented from pseudo code at http://en.wikipedia.org/wiki/Julian_day
+        /// </summary>
+        private static ulong DateToJulian(DateTime date)
+        {
+            ulong jdn = (ulong)((1461 * (date.Year + 4800 + (date.Month - 14) / 12)) / 4
+                                + (367 * (date.Month - 2 - 12 * ((date.Month - 14) / 12))) / 12
+                                - (3 * ((date.Year + 4900 + (date.Month - 14) / 12) / 100)) / 4 + date.Day - 32075);
+            return jdn;
+        }
+
+        /// <inheritdoc />
+        public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
             return ConvertFoxProToDateTime(buffer);
         }

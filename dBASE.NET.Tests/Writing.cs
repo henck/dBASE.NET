@@ -100,7 +100,7 @@ namespace dBASE.NET.Tests
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual((float)3.14, dbf.Records[0][0], "Record content should be 3.14.");
+			Assert.AreEqual(3.14, dbf.Records[0][0], "Record content should be 3.14.");
 		}
 
 		[TestMethod]
@@ -110,13 +110,13 @@ namespace dBASE.NET.Tests
 			DbfField field = new DbfField("TEST", DbfFieldType.Float, 12);
 			dbf.Fields.Add(field);
 			DbfRecord record = dbf.CreateRecord();
-			record.Data[0] = 3.14;
+			record.Data[0] = 3.14f;
 			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
 
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual((float)3.14, dbf.Records[0][0], "Record content should be 3.14.");
+			Assert.AreEqual(3.14f, dbf.Records[0][0], "Record content should be 3.14.");
 		}
 
 		[TestMethod]
