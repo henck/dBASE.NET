@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dbase.NET")]
+[assembly: AssemblyTitle("dBASE.NET")]
 [assembly: AssemblyDescription("dBASE.NET is a .NET class library used to read and write FoxBase, dBASE III and dBASE IV .dbf files. The Dbf class reads fields and records from a .dbf file. These fields and records can then be accessed as lists and looped over.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Independent Software / Alexander van Oostenrijk")]
-[assembly: AssemblyProduct("Dbase.NET")]
+[assembly: AssemblyProduct("dBASE.NET")]
 [assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

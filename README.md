@@ -17,19 +17,19 @@ dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
 * Package manager:
 
 ```
-PM> Install-Package dBASE.NET -Version 1.1.0 
+PM> Install-Package dBASE.NET -Version 1.2.0
 ```
 
 * .NET CLI:
 
 ```
-> dotnet add package dBASE.NET --version 1.1.0 
+> dotnet add package dBASE.NET --version 1.2.0
 ```
    
 * Paket CLI:
 
 ```
-> paket add dBASE.NET --version 1.1.0 
+> paket add dBASE.NET --version 1.2.0
 ```
 
 ## Opening a DBF file
@@ -110,5 +110,6 @@ http://yuml.me/diagram/scruffy/class/edit/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField
 
 ## Versions
 
+* Version 1.2.0: Sign assembly.
 * Version 1.1.0: Add support for custom character encoding
 * Version 1.0.0: Initial release

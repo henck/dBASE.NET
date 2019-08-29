@@ -13,56 +13,118 @@
     {
         private DbfHeader header;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dbf" />.
+        /// </summary>
         public Dbf()
         {
-            this.header = DbfHeader.CreateHeader(DbfVersion.FoxBaseDBase3NoMemo);
-            this.Fields = new List<DbfField>();
-            this.Records = new List<DbfRecord>();
+            header = DbfHeader.CreateHeader(DbfVersion.FoxBaseDBase3NoMemo);
+            Fields = new List<DbfField>();
+            Records = new List<DbfRecord>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dbf" /> with custom encoding.
+        /// </summary>
+        /// <param name="encoding">Custom encoding.</param>
         public Dbf(Encoding encoding)
             : this()
         {
             Encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
         }
 
+        /// <summary>
+        /// The collection of <see cref="DbfField" /> that represent table header.
+        /// </summary>
         public List<DbfField> Fields { get; }
 
+        /// <summary>
+        /// The collection of <see cref="DbfRecord" /> that contains table data.
+        /// </summary>
         public List<DbfRecord> Records { get; }
 
+        /// <summary>
+        /// The <see cref="System.Text.Encoding" /> class that corresponds to the specified code page.
+        /// Default value is <see cref="System.Text.Encoding.ASCII" />
+        /// </summary>
         public Encoding Encoding { get; } = Encoding.ASCII;
 
+        /// <summary>
+        /// Creates a new <see cref="DbfRecord" /> with the same schema as the table.
+        /// </summary>
+        /// <returns>A <see cref="DbfRecord" /> with the same schema as the <see cref="T:System.Data.DataTable" />.</returns>
         public DbfRecord CreateRecord()
         {
             DbfRecord record = new DbfRecord(Fields);
-            this.Records.Add(record);
+            Records.Add(record);
             return record;
         }
 
-        public void Read(String path)
+        /// <summary>
+        /// Opens a DBF file, reads the contents that initialize the current instance, and then closes the file.
+        /// </summary>
+        /// <param name="path">The file to read.</param>
+        public void Read(string path)
         {
             // Open stream for reading.
-            FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
-            BinaryReader reader = new BinaryReader(stream);
+            using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
+                using (BinaryReader reader = new BinaryReader(stream))
+                {
+                    ReadHeader(reader);
+                    byte[] memoData = ReadMemos(path);
+                    ReadFields(reader);
 
-            ReadHeader(reader);
-            byte[] memoData = ReadMemos(path);
-            ReadFields(reader);
+                    // After reading the fields, we move the read pointer to the beginning
+                    // of the records, as indicated by the "HeaderLength" value in the header.
+                    stream.Seek(header.HeaderLength, SeekOrigin.Begin);
 
-            // After reading the fields, we move the read pointer to the beginning
-            // of the records, as indicated by the "HeaderLength" value in the header.
-            stream.Seek(header.HeaderLength, SeekOrigin.Begin);
-
-            ReadRecords(reader, memoData);
-
-            // Close stream.
-            reader.Close();
-            stream.Close();
+                    ReadRecords(reader, memoData);
+                }
         }
 
-        private byte[] ReadMemos(string path)
+        /// <summary>
+        /// Creates a new file, writes the current instance to the file, and then closes the file. If the target file already exists, it is overwritten.
+        /// </summary>
+        /// <param name="path">The file to read.</param>
+        /// <param name="version">The version <see cref="DbfVersion" />. If unknown specified, use current header version.</param>
+        public void Write(string path, DbfVersion version = DbfVersion.Unknown)
         {
-            String memoPath = Path.ChangeExtension(path, "fpt");
+            if (version != DbfVersion.Unknown)
+            {
+                header.Version = version;
+                header = DbfHeader.CreateHeader(header.Version);
+            }
+
+            using (FileStream stream = File.Open(path, FileMode.Create, FileAccess.Write))
+            {
+                Write(stream, version);
+            }
+        }
+
+        /// <summary>
+        /// Creates writes the current instance to the specified stream.
+        /// </summary>
+        /// <param name="stream">The output stream.</param>
+        /// <param name="version">The version <see cref="DbfVersion" />. If unknown specified, use current header version.</param>
+        public void Write(Stream stream, DbfVersion version = DbfVersion.Unknown)
+        {
+            if (version != DbfVersion.Unknown)
+            {
+                header.Version = version;
+                header = DbfHeader.CreateHeader(header.Version);
+            }
+
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                header.Write(writer, Fields, Records);
+                WriteFields(writer);
+                WriteRecords(writer);
+            }
+        }
+
+        private static byte[] ReadMemos(string path)
+        {
+            string memoPath = Path.ChangeExtension(path, "fpt");
             if (!File.Exists(memoPath))
             {
                 memoPath = Path.ChangeExtension(path, "dbt");
@@ -114,23 +176,6 @@
             {
                 Records.Add(new DbfRecord(reader, header, Fields, memoData, Encoding));
             }
-        }
-
-        public void Write(String path, DbfVersion version = DbfVersion.Unknown)
-        {
-            // Use version specified. If unknown specified, use current header version.
-            if (version != DbfVersion.Unknown) header.Version = version;
-            header = DbfHeader.CreateHeader(header.Version);
-
-            FileStream stream = File.Open(path, FileMode.Create, FileAccess.Write);
-            BinaryWriter writer = new BinaryWriter(stream);
-
-            header.Write(writer, Fields, Records);
-            WriteFields(writer);
-            WriteRecords(writer);
-
-            writer.Close();
-            stream.Close();
         }
 
         private void WriteFields(BinaryWriter writer)
