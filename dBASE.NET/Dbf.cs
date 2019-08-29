@@ -97,7 +97,7 @@
 
             using (FileStream stream = File.Open(path, FileMode.Create, FileAccess.Write))
             {
-                Write(stream, version);
+                Write(stream, false);
             }
         }
 
@@ -114,7 +114,12 @@
                 header = DbfHeader.CreateHeader(header.Version);
             }
 
-            using (BinaryWriter writer = new BinaryWriter(stream))
+            Write(stream, true);
+        }
+
+        private void Write(Stream stream, bool leaveOpen)
+        {
+            using (BinaryWriter writer = new BinaryWriter(stream, Encoding, leaveOpen))
             {
                 header.Write(writer, Fields, Records);
                 WriteFields(writer);

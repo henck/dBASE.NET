@@ -15,7 +15,7 @@
       Added assembly signature.
     </releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags>dBASE, dbf</tags>
+    <tags>dBASE dbf</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\dBASE.NET.dll" target="lib\net45\dBASE.NET.dll" />
