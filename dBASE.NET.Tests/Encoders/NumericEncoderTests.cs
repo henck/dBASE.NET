@@ -11,6 +11,8 @@
     {
         private readonly DbfField numericField = new DbfField("SUMMA", DbfFieldType.Numeric, 10, 2);
 
+        private readonly DbfField integerField = new DbfField("NUM", DbfFieldType.Numeric, 10, 0);
+
         private readonly Encoding encoding = Encoding.ASCII;
 
         [TestMethod]
@@ -59,6 +61,24 @@
             // Act.
             var expectedEncodedVal = encoding.GetBytes(expectedVal);
             var encodedVal = NumericEncoder.Instance.Encode(numericField, val, encoding);
+
+            // Assert.
+            for (int i = 0; i < numericField.Length; i++)
+            {
+                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+            }
+        }
+
+        [TestMethod]
+        public void EncodeTestNumber()
+        {
+            // Arrange.
+            const int val = 1;
+            var expectedVal = new[] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1' };
+
+            // Act.
+            var expectedEncodedVal = encoding.GetBytes(expectedVal);
+            var encodedVal = NumericEncoder.Instance.Encode(integerField, val, encoding);
 
             // Assert.
             for (int i = 0; i < numericField.Length; i++)

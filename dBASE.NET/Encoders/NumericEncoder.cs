@@ -31,7 +31,7 @@
                         parts[1] = parts[1].PadRight(field.Precision, '0');
                     }
                 }
-                else
+                else if (field.Precision > 0)
                 {
                     // If value has no fractional part, pad it with zeros.
                     parts = new[] { parts[0], new string('0', field.Precision) };
