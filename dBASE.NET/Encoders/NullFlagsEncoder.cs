@@ -8,14 +8,7 @@
 
         private NullFlagsEncoder() { }
 
-        public static NullFlagsEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new NullFlagsEncoder();
-                return instance;
-            }
-        }
+        public static NullFlagsEncoder Instance => instance ?? (instance = new NullFlagsEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

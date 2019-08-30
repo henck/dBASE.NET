@@ -9,14 +9,7 @@
 
         private DateTimeEncoder() { }
 
-        public static DateTimeEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new DateTimeEncoder();
-                return instance;
-            }
-        }
+        public static DateTimeEncoder Instance => instance ?? (instance = new DateTimeEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

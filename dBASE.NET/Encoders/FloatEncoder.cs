@@ -9,14 +9,7 @@
 
         private FloatEncoder() { }
 
-        public static FloatEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new FloatEncoder();
-                return instance;
-            }
-        }
+        public static FloatEncoder Instance => instance ?? (instance = new FloatEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

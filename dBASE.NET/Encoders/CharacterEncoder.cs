@@ -8,14 +8,7 @@
 
         private CharacterEncoder() { }
 
-        public static CharacterEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new CharacterEncoder();
-                return instance;
-            }
-        }
+        public static CharacterEncoder Instance => instance ?? (instance = new CharacterEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

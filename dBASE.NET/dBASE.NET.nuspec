@@ -13,6 +13,7 @@
     <releaseNotes>
       Added custom encoding support.
       Added assembly signature.
+      Fixed numeric formatting.
     </releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>dBASE dbf</tags>

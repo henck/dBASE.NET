@@ -35,6 +35,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>dBASE.NET.Tests.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -57,6 +63,7 @@
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
     <Compile Include="DBase4WithMemo.cs" />
+    <Compile Include="Encoders\NumericEncoderTests.cs" />
     <Compile Include="FoxProWithMemo.cs" />
     <Compile Include="VisualFoxPro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -255,6 +262,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="dBASE.NET.Tests.snk" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

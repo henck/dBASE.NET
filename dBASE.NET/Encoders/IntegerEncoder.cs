@@ -9,14 +9,7 @@
 
         private IntegerEncoder() { }
 
-        public static IntegerEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new IntegerEncoder();
-                return instance;
-            }
-        }
+        public static IntegerEncoder Instance => instance ?? (instance = new IntegerEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
