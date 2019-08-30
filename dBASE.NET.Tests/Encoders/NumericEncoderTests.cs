@@ -48,5 +48,23 @@
                 Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
+
+        [TestMethod]
+        public void EncodeTestDecimalNull()
+        {
+            // Arrange.
+            decimal? val = null;
+            var expectedVal = new[] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
+
+            // Act.
+            var expectedEncodedVal = encoding.GetBytes(expectedVal);
+            var encodedVal = NumericEncoder.Instance.Encode(numericField, val, encoding);
+
+            // Assert.
+            for (int i = 0; i < numericField.Length; i++)
+            {
+                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+            }
+        }
     }
 }

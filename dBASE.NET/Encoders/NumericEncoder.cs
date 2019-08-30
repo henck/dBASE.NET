@@ -15,27 +15,31 @@
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            string text = Convert.ToString(data, CultureInfo.InvariantCulture) ?? "";
-            var parts = text.Split('.');
-            if (parts.Length == 2)
+            string text = Convert.ToString(data, CultureInfo.InvariantCulture) ?? string.Empty;
+            if (!string.IsNullOrEmpty(text))
             {
-                // Truncate or pad float part.
-                if (parts[1].Length > field.Precision)
+                var parts = text.Split('.');
+                if (parts.Length == 2)
                 {
-                    parts[1] = parts[1].Substring(0, field.Precision);
+                    // Truncate or pad float part.
+                    if (parts[1].Length > field.Precision)
+                    {
+                        parts[1] = parts[1].Substring(0, field.Precision);
+                    }
+                    else
+                    {
+                        parts[1] = parts[1].PadRight(field.Precision, '0');
+                    }
                 }
                 else
                 {
-                    parts[1] = parts[1].PadRight(field.Precision, '0');
+                    // If value has no fractional part, pad it with zeros.
+                    parts = new[] { parts[0], new string('0', field.Precision) };
                 }
-            }
-            else
-            {
-                // If value has no fractional part, pad it with zeros.
-                parts = new[] { parts[0], new string('0', field.Precision) };
+
+                text = string.Join(".", parts);
             }
 
-            text = string.Join(".", parts);
             text = text.PadLeft(field.Length, ' ');
             if (text.Length > field.Length)
             {
