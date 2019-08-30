@@ -9,14 +9,7 @@
 
         private CurrencyEncoder() { }
 
-        public static CurrencyEncoder Instance
-        {
-            get
-            {
-                if (instance == null) instance = new CurrencyEncoder();
-                return instance;
-            }
-        }
+        public static CurrencyEncoder Instance => instance ?? (instance = new CurrencyEncoder());
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

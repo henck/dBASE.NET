@@ -1,17 +1,25 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>1.1.0</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>dBASE.NET</id>
+    <version>1.2.0</version>
+    <title>dBASE.NET</title>
+    <authors>Independent Software / Alexander van Oostenrijk</authors>
+    <owners>IndependentSw</owners>
     <licenseUrl>https://github.com/henck/dBASE.NET/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/henck/dBASE.NET</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Initial release</releaseNotes>
-    <copyright>Copyright 2018</copyright>
-    <tags>dBASE</tags>
+    <description>dBASE.NET is a .NET class library used to load dBASE IV .dbf files. The Dbf class reads fields (DbfField) and records (DbfRecord) from a .dbf file. These fields and records can then be accessed as lists and looped over.</description>
+    <releaseNotes>
+      Added custom encoding support.
+      Added assembly signature.
+      Fixed numeric formatting.
+    </releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>dBASE dbf</tags>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\dBASE.NET.dll" target="lib\net45\dBASE.NET.dll" />
+    <file src="bin\$configuration$\dBASE.NET.xml" target="lib\net45\dBASE.NET.xml" />
+  </files>
 </package>
