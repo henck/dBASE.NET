@@ -5,7 +5,7 @@
 
     internal class DateTimeEncoder : IEncoder
     {
-        private static DateTimeEncoder instance = null;
+        private static DateTimeEncoder instance;
 
         private DateTimeEncoder() { }
 

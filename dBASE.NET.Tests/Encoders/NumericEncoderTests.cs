@@ -16,6 +16,24 @@
         private readonly Encoding encoding = Encoding.ASCII;
 
         [TestMethod]
+        public void EncodeTestDecimalOverLength()
+        {
+            // Arrange.
+            const decimal val = 13005200m;
+            var expectedVal = new[] { '1', '3', '0', '0', '5', '2', '0', '0', '.', '0' };
+
+            // Act.
+            var expectedEncodedVal = encoding.GetBytes(expectedVal);
+            var encodedVal = NumericEncoder.Instance.Encode(numericField, val, encoding);
+
+            // Assert.
+            for (int i = 0; i < numericField.Length; i++)
+            {
+                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+            }
+        }
+
+        [TestMethod]
         public void EncodeTestDecimalOverPrecision()
         {
             // Arrange.
@@ -56,7 +74,7 @@
         {
             // Arrange.
             decimal? val = null;
-            var expectedVal = new[] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
+            string expectedVal = numericField.DefaultValue;
 
             // Act.
             var expectedEncodedVal = encoding.GetBytes(expectedVal);

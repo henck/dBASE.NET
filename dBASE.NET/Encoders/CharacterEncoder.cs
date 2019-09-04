@@ -4,7 +4,7 @@
 
     internal class CharacterEncoder : IEncoder
     {
-        private static CharacterEncoder instance = null;
+        private static CharacterEncoder instance;
 
         private CharacterEncoder() { }
 
@@ -13,12 +13,22 @@
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            // Convert data to string. NULL is the empty string.
-            string text = data == null ? "" : (string)data;
-            // Pad string with spaces.
-            while (text.Length < field.Length) text = text + " ";
+            // Input data maybe various: int, string, whatever.
+            string res = data?.ToString();
+            if (string.IsNullOrEmpty(res))
+            {
+                res = field.DefaultValue;
+            }
+            else
+            {
+                // Pad string with spaces or trim.
+                res = res.Length > field.Length
+                    ? res.Substring(0, field.Length)
+                    : res.PadRight(field.Length, ' ');
+            }
+
             // Convert string to byte array.
-            return encoding.GetBytes((string)text);
+            return encoding.GetBytes(res);
         }
 
         /// <inheritdoc />

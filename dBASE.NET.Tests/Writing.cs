@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Text;
-
-namespace dBASE.NET.Tests
+﻿namespace dBASE.NET.Tests
 {
-	[TestClass]
+    using System;
+    using System.IO;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
 	public class Writing
 	{
 		Dbf dbf;
@@ -91,7 +91,7 @@ namespace dBASE.NET.Tests
 		public void NumericField()
 		{
 			dbf = new Dbf();
-			DbfField field = new DbfField("TEST", DbfFieldType.Numeric, 12);
+			DbfField field = new DbfField("TEST", DbfFieldType.Numeric, 12, 2);
 			dbf.Fields.Add(field);
 			DbfRecord record = dbf.CreateRecord();
 			record.Data[0] = 3.14;

@@ -6,7 +6,7 @@
 
     internal class NumericEncoder : IEncoder
     {
-        private static NumericEncoder instance = null;
+        private static NumericEncoder instance;
 
         private NumericEncoder() { }
 
@@ -15,8 +15,12 @@
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            string text = Convert.ToString(data, CultureInfo.InvariantCulture) ?? string.Empty;
-            if (!string.IsNullOrEmpty(text))
+            string text = Convert.ToString(data, CultureInfo.InvariantCulture);
+            if (string.IsNullOrEmpty(text))
+            {
+                text = field.DefaultValue;
+            }
+            else
             {
                 var parts = text.Split('.');
                 if (parts.Length == 2)
@@ -38,12 +42,11 @@
                 }
 
                 text = string.Join(".", parts);
-            }
 
-            text = text.PadLeft(field.Length, ' ');
-            if (text.Length > field.Length)
-            {
-                text = text.Substring(0, field.Length);
+                // Pad string with spaces or trim.
+                text = text.Length > field.Length
+                    ? text.Substring(0, field.Length)
+                    : text.PadLeft(field.Length, ' ');
             }
 
             return encoding.GetBytes(text);

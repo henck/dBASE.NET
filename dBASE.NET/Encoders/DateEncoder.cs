@@ -1,11 +1,14 @@
 ﻿namespace dBASE.NET.Encoders
 {
     using System;
+    using System.Globalization;
     using System.Text;
 
     internal class DateEncoder : IEncoder
     {
-        private static DateEncoder instance = null;
+        private const string format = "yyyyMMdd";
+
+        private static DateEncoder instance;
 
         private DateEncoder() { }
 
@@ -14,11 +17,14 @@
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            string text = new string(' ', field.Length);
-            if (data != null)
+            string text;
+            if (data is DateTime dt)
             {
-                DateTime dt = (DateTime)data;
-                text = String.Format("{0:d4}{1:d2}{2:d2}", dt.Year, dt.Month, dt.Day).PadLeft(field.Length, ' ');
+                text = dt.ToString(format).PadLeft(field.Length, ' ');
+            }
+            else
+            {
+                text = field.DefaultValue;
             }
 
             return encoding.GetBytes(text);
@@ -29,7 +35,7 @@
         {
             string text = encoding.GetString(buffer).Trim();
             if (text.Length == 0) return null;
-            return DateTime.ParseExact(text, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(text, format, CultureInfo.InvariantCulture);
         }
     }
 }

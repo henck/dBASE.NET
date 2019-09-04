@@ -5,7 +5,7 @@
 
     public class IntegerEncoder : IEncoder
     {
-        private static IntegerEncoder instance = null;
+        private static IntegerEncoder instance;
 
         private IntegerEncoder() { }
 
