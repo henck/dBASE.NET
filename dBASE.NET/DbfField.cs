@@ -9,6 +9,8 @@
     /// </summary>
     public class DbfField
     {
+        private string defaultValue;
+
         /// <summary>
         /// Field name
         /// </summary>
@@ -29,6 +31,11 @@
         public byte WorkAreaID { get; set; }
 
         public byte Flags { get; set; }
+
+        /// <summary>
+        /// Default value to write.
+        /// </summary>
+        internal string DefaultValue => defaultValue ?? (defaultValue = new string(' ', Length));
 
         public DbfField(string name, DbfFieldType type, byte length, byte precision = 0)
         {

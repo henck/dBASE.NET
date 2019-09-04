@@ -4,7 +4,7 @@
 
     internal class LogicalEncoder : IEncoder
     {
-        private static LogicalEncoder instance = null;
+        private static LogicalEncoder instance;
 
         private LogicalEncoder() { }
 

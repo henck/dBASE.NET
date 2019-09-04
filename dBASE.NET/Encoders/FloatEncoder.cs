@@ -5,7 +5,7 @@
 
     internal class FloatEncoder : IEncoder
     {
-        private static FloatEncoder instance = null;
+        private static FloatEncoder instance;
 
         private FloatEncoder() { }
 

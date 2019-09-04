@@ -4,7 +4,7 @@
 
     internal class NullFlagsEncoder : IEncoder
     {
-        private static NullFlagsEncoder instance = null;
+        private static NullFlagsEncoder instance;
 
         private NullFlagsEncoder() { }
 

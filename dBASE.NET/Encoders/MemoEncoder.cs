@@ -5,7 +5,7 @@
 
     internal class MemoEncoder : IEncoder
     {
-        private static MemoEncoder instance = null;
+        private static MemoEncoder instance;
 
         private MemoEncoder() { }
 

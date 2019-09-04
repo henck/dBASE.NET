@@ -63,6 +63,8 @@
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
     <Compile Include="DBase4WithMemo.cs" />
+    <Compile Include="Encoders\CharacterEncoderTests.cs" />
+    <Compile Include="Encoders\DateEncoderTests.cs" />
     <Compile Include="Encoders\NumericEncoderTests.cs" />
     <Compile Include="FoxProWithMemo.cs" />
     <Compile Include="VisualFoxPro.cs" />

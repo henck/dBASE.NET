@@ -5,7 +5,7 @@
 
     internal class CurrencyEncoder : IEncoder
     {
-        private static CurrencyEncoder instance = null;
+        private static CurrencyEncoder instance;
 
         private CurrencyEncoder() { }
 
