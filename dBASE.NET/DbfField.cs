@@ -7,7 +7,7 @@
     /// <summary>
     /// Encapsulates a field descriptor in a .dbf file.
     /// </summary>
-    public class DbfField
+    public class DbfField : IEquatable<DbfField>
     {
         private string defaultValue;
 
@@ -47,9 +47,35 @@
             this.Flags = 0;
         }
 
+        /// <inheritdoc />
+        public bool Equals(DbfField other)
+        {
+            return other != null
+                   && this.Name == other.Name
+                   && this.Type == other.Type
+                   && this.Length == other.Length
+                   && this.Precision == other.Precision
+                   && this.WorkAreaID == other.WorkAreaID
+                   && this.Flags == other.Flags;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return obj is DbfField other && Equals(other);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"Name = `{Name}`, Type = `{(char)Type}`, Length = `{Length}`, Precision = `{Precision}`";
+        }
+
         internal DbfField(BinaryReader reader, Encoding encoding)
         {
-            Name = encoding.GetString(reader.ReadBytes(11)).TrimEnd((Char)0);
+            // Some field name maybe like `NUM\0\0?B\0\0\0\0`, so we should split by `\0` instead of end trimming.
+            string rawName = encoding.GetString(reader.ReadBytes(11));
+            Name = rawName.Split((char)0)[0];
             Type = (DbfFieldType)reader.ReadByte();
             reader.ReadBytes(4); // reserved: Field data address in memory.
             Length = reader.ReadByte();

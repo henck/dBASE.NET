@@ -59,6 +59,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BrokenFields.cs" />
     <Compile Include="CustomEncoding.cs" />
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
@@ -265,6 +266,9 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="dBASE.NET.Tests.snk" />
+    <Content Include="fixtures\fields\POST986.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Choose>
