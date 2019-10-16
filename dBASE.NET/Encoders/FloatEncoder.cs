@@ -1,6 +1,7 @@
 ﻿namespace dBASE.NET.Encoders
 {
     using System;
+    using System.Globalization;
     using System.Text;
 
     internal class FloatEncoder : IEncoder
@@ -14,8 +15,12 @@
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            string text = Convert.ToString(data).PadLeft(field.Length, ' ');
-            if (text.Length > field.Length) text.Substring(0, field.Length);
+            string text = Convert.ToString(data, CultureInfo.InvariantCulture).PadLeft(field.Length, ' ');
+            if (text.Length > field.Length)
+            {
+                text.Substring(0, field.Length);
+            }
+
             return encoding.GetBytes(text);
         }
 
@@ -23,8 +28,12 @@
         public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
             string text = encoding.GetString(buffer).Trim();
-            if (text.Length == 0) return null;
-            return Convert.ToSingle(text);
+            if (text.Length == 0)
+            {
+                return null;
+            }
+
+            return Convert.ToSingle(text, CultureInfo.InvariantCulture);
         }
     }
 }
