@@ -67,19 +67,51 @@
         public void Read(string path)
         {
             // Open stream for reading.
-            using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
-                using (BinaryReader reader = new BinaryReader(stream))
+            using (FileStream baseStream = File.Open(path, FileMode.Open, FileAccess.Read))
+            {
+                string memoPath = GetMemoPath(path);
+                if (memoPath == null)
                 {
-                    ReadHeader(reader);
-                    byte[] memoData = ReadMemos(path);
-                    ReadFields(reader);
-
-                    // After reading the fields, we move the read pointer to the beginning
-                    // of the records, as indicated by the "HeaderLength" value in the header.
-                    stream.Seek(header.HeaderLength, SeekOrigin.Begin);
-
-                    ReadRecords(reader, memoData);
+                    Read(baseStream);
                 }
+                else
+                {
+                    using (FileStream memoStream = File.Open(memoPath, FileMode.Open, FileAccess.Read))
+                    {
+                        Read(baseStream, memoStream);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the contents of streams that initialize the current instance.
+        /// </summary>
+        /// <param name="baseStream">Stream with a database.</param>
+        /// <param name="memoStream">Stream with a memo.</param>
+        public void Read(Stream baseStream, Stream memoStream = null)
+        {
+            if (baseStream == null)
+            {
+                throw new ArgumentNullException(nameof(baseStream));
+            }
+            if (!baseStream.CanSeek)
+            {
+                throw new InvalidOperationException("The stream must provide positioning (support Seek method).");
+            }
+
+            baseStream.Seek(0, SeekOrigin.Begin);
+            using (BinaryReader reader = new BinaryReader(baseStream))
+            {
+                ReadHeader(reader);
+                byte[] memoData = memoStream != null ? ReadMemos(memoStream) : null;
+                ReadFields(reader);
+
+                // After reading the fields, we move the read pointer to the beginning
+                // of the records, as indicated by the "HeaderLength" value in the header.
+                baseStream.Seek(header.HeaderLength, SeekOrigin.Begin);
+                ReadRecords(reader, memoData);
+            }
         }
 
         /// <summary>
@@ -127,25 +159,18 @@
             }
         }
 
-        private static byte[] ReadMemos(string path)
+        private static byte[] ReadMemos(Stream stream)
         {
-            string memoPath = Path.ChangeExtension(path, "fpt");
-            if (!File.Exists(memoPath))
+            if (stream == null)
             {
-                memoPath = Path.ChangeExtension(path, "dbt");
-                if (!File.Exists(memoPath))
-                {
-                    return null;
-                }
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            FileStream str = File.Open(memoPath, FileMode.Open, FileAccess.Read);
-            BinaryReader memoReader = new BinaryReader(str);
-            byte[] memoData = new byte[str.Length];
-            memoData = memoReader.ReadBytes((int)str.Length);
-            memoReader.Close();
-            str.Close();
-            return memoData;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
 
         private void ReadHeader(BinaryReader reader)
@@ -203,6 +228,20 @@
 
             // Write EOF character.
             writer.Write((byte)0x1a);
+        }
+
+        private static string GetMemoPath(string basePath)
+        {
+            string memoPath = Path.ChangeExtension(basePath, "fpt");
+            if (!File.Exists(memoPath))
+            {
+                memoPath = Path.ChangeExtension(basePath, "dbt");
+                if (!File.Exists(memoPath))
+                {
+                    return null;
+                }
+            }
+            return memoPath;
         }
     }
 }
