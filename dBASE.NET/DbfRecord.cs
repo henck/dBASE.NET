@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -12,6 +13,9 @@
     /// </summary>
     public class DbfRecord
     {
+        private const string defaultSeparator = ",";
+        private const string defaultMask = "{name}={value}";
+
         private List<DbfField> fields;
 
         internal DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData, Encoding encoding)
@@ -72,6 +76,42 @@
                 if (index == -1) return null;
                 return Data[index];
             }
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return ToString(defaultSeparator, defaultMask);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object with custom separator.
+        /// </summary>
+        /// <param name="separator">Custom separator.</param>
+        /// <returns>A string that represents the current object with custom separator.</returns>
+        public string ToString(string separator)
+        {
+            return ToString(separator, defaultMask);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object with custom separator and mask.
+        /// </summary>
+        /// <param name="separator">Custom separator.</param>
+        /// <param name="mask">
+        /// Custom mask.
+        /// <para>e.g., "{name}={value}", where {name} is the mask for the field name, and {value} is the mask for the value.</para>
+        /// </param>
+        /// <returns>A string that represents the current object with custom separator and mask.</returns>
+        public string ToString(string separator, string mask)
+        {
+            separator = separator ?? defaultSeparator;
+            mask = (mask ?? defaultMask).Replace("{name}", "{0}").Replace("{value}", "{1}");
+
+            return string.Join(separator, fields.Select(z => string.Format(mask, z.Name, this[z])));
         }
 
         internal void Write(BinaryWriter writer, Encoding encoding)
