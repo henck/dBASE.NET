@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="BrokenFields.cs" />
     <Compile Include="CustomEncoding.cs" />
+    <Compile Include="Dbase3WithMemoStreamRead.cs" />
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
     <Compile Include="DBase4WithMemo.cs" />
