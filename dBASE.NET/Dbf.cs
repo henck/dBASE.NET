@@ -83,6 +83,20 @@
         }
 
         /// <summary>
+        /// Opens a DBF file, reads only database description and fields descriptors, and then closes the file.
+        /// </summary>
+        /// <param name="path">The file to read.</param>
+        public void ReadMetadata(string path) 
+        {
+            using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
+            using (BinaryReader reader = new BinaryReader(stream)) 
+            {
+                ReadHeader(reader);
+                ReadFields(reader);
+            }
+        }
+
+        /// <summary>
         /// Creates a new file, writes the current instance to the file, and then closes the file. If the target file already exists, it is overwritten.
         /// </summary>
         /// <param name="path">The file to read.</param>
@@ -142,7 +156,7 @@
             FileStream str = File.Open(memoPath, FileMode.Open, FileAccess.Read);
             BinaryReader memoReader = new BinaryReader(str);
             byte[] memoData = new byte[str.Length];
-            memoData = memoReader.ReadBytes((int)str.Length);
+            memoReader.Read(memoData, 0, memoData.Length);
             memoReader.Close();
             str.Close();
             return memoData;
