@@ -68,6 +68,7 @@
     <Compile Include="Encoders\DateEncoderTests.cs" />
     <Compile Include="Encoders\NumericEncoderTests.cs" />
     <Compile Include="FoxProWithMemo.cs" />
+    <Compile Include="DbfRecordTests.cs" />
     <Compile Include="VisualFoxPro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VisualFoxProWithAI.cs" />
