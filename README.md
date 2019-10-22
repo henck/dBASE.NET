@@ -17,19 +17,19 @@ dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
 * Package manager:
 
 ```
-PM> Install-Package dBASE.NET -Version 1.2.1
+PM> Install-Package dBASE.NET -Version 1.2.2
 ```
 
 * .NET CLI:
 
 ```
-> dotnet add package dBASE.NET --version 1.2.1
+> dotnet add package dBASE.NET --version 1.2.2
 ```
    
 * Paket CLI:
 
 ```
-> paket add dBASE.NET --version 1.2.1
+> paket add dBASE.NET --version 1.2.2
 ```
 
 ## Opening a DBF file
@@ -110,6 +110,7 @@ http://yuml.me/diagram/scruffy/class/edit/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField
 
 ## Versions
 
+* Version 1.2.2: Fix reading DbfField from file with `invalid` name.
 * Version 1.2.1: Fixed buffer overflow on write operation.
   Fixed trimming and padding on write operation.
   Performance improve on write operation.
