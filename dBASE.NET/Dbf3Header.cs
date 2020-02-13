@@ -13,7 +13,10 @@ namespace dBASE.NET
 		internal override void Read(BinaryReader reader)
 		{
 			Version = (DbfVersion) reader.ReadByte();
-			LastUpdate = new DateTime(reader.ReadByte() + 1900, reader.ReadByte(), reader.ReadByte());
+			var year = 1900 + reader.ReadByte();
+			var month = reader.ReadByte();
+			var day = reader.ReadByte();
+			LastUpdate = new DateTime(year, month < 1 ? 1 : month, day < 1 ? 1 : day);
 			NumRecords = reader.ReadUInt32();
 			HeaderLength = reader.ReadUInt16();
 			RecordLength = reader.ReadUInt16();
