@@ -1,36 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6D931BBD-E331-4A20-90E8-FF7BB2A46E8F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dBASE.NET</RootNamespace>
-    <AssemblyName>dBASE.NET</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\dBASE.NET.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\dBASE.NET.xml</DocumentationFile>
+    <AssemblyTitle>dBASE.NET</AssemblyTitle>
+    <Company>Independent Software / Alexander van Oostenrijk</Company>
+    <Product>dBASE.NET</Product>
+    <Description>dBASE.NET is a .NET class library used to load dBASE IV .dbf files. The Dbf class reads fields (DbfField) and records (DbfRecord) from a .dbf file. These fields and records can then be accessed as lists and looped over.</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <DocumentationFile>bin\$(Configuration)\dBASE.NET.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Authors>Independent Software / Alexander van Oostenrijk</Authors>
+    <PackageId>dBASE.NET</PackageId>
+    <PackageLicenseUrl>https://github.com/henck/dBASE.NET/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/henck/dBASE.NET</PackageProjectUrl>
+    <PackageReleaseNotes>
+      Fix reading DbfField from file with `invalid` name.
+    </PackageReleaseNotes>
+    <PackageTags>dBASE dbf</PackageTags>
+    <TargetFrameworks>net461;net48;netstandard2.0</TargetFrameworks>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -39,44 +29,8 @@
     <AssemblyOriginatorKeyFile>dBASE.NET.key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DbfRecord.cs" />
-    <Compile Include="Dbf3Header.cs" />
-    <Compile Include="DbfField.cs" />
-    <Compile Include="DbfFieldType.cs" />
-    <Compile Include="DbfHeader.cs" />
-    <Compile Include="Dbf.cs" />
-    <Compile Include="DbfVersion.cs" />
-    <Compile Include="Encoders\CharacterEncoder.cs" />
-    <Compile Include="Encoders\CurrencyEncoder.cs" />
-    <Compile Include="Encoders\DateEncoder.cs" />
-    <Compile Include="Encoders\DateTimeEncoder.cs" />
-    <Compile Include="Encoders\EncoderFactory.cs" />
-    <Compile Include="Encoders\FloatEncoder.cs" />
-    <Compile Include="Encoders\IEncoder.cs" />
-    <Compile Include="Encoders\IntegerEncoder.cs" />
-    <Compile Include="Encoders\LogicalEncoder.cs" />
-    <Compile Include="Encoders\MemoEncoder.cs" />
-    <Compile Include="Encoders\NullFlagsEncoder.cs" />
-    <Compile Include="Encoders\NumericEncoder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".gitignore" />
     <None Include="ClassDiagram.cd" />
     <None Include="dBASE.NET.key.snk" />
-    <None Include="dBASE.NET.nuspec" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

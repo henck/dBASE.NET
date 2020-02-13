@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>dBASE.NET.Tests</RootNamespace>
     <AssemblyName>dBASE.NET.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -260,19 +260,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dBASE.NET\dBASE.NET.csproj">
-      <Project>{6d931bbd-e331-4a20-90e8-ff7bb2a46e8f}</Project>
-      <Name>dBASE.NET</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".gitignore" />
     <None Include="dBASE.NET.Tests.snk" />
     <Content Include="fixtures\fields\POST986.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\dBASE.NET\dBASE.NET.csproj">
+      <Project>{6d931bbd-e331-4a20-90e8-ff7bb2a46e8f}</Project>
+      <Name>dBASE.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
