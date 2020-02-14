@@ -93,7 +93,7 @@ dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
 | `I`  | Integer          | Int32 |
 | `L`  | Logical          | Bool |
 | `M`  | Memo             | String |
-| `N`  | Numeric          | Float |
+| `N`  | Numeric          | Double |
 | `T`  | DateTime         | DateTime |
 | `Y`  | Currency         | Float |
 
