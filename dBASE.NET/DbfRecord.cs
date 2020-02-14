@@ -29,6 +29,8 @@
             // Read entire record as sequence of bytes.
             // Note that record length includes marker.
             byte[] row = reader.ReadBytes(header.RecordLength - 1);
+            if (row.Length == 0)
+                throw new EndOfStreamException();
 
             // Read data for each field.
             int offset = 0;

@@ -204,7 +204,11 @@
             // Records are terminated by 0x1a char (officially), or EOF (also seen).
             while (reader.PeekChar() != 0x1a && reader.PeekChar() != -1)
             {
-                Records.Add(new DbfRecord(reader, header, Fields, memoData, Encoding));
+                try
+                {
+                    Records.Add(new DbfRecord(reader, header, Fields, memoData, Encoding));
+                }
+                catch (EndOfStreamException) { }
             }
         }
 
