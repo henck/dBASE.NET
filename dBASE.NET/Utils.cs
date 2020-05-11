@@ -20,17 +20,6 @@ namespace dBASE.NET
                 bf.Serialize(ms, obj);
                 return ms.ToArray();
             }
-        }
-        public static Stream ObjectToMemoryStream(object obj)
-        {
-            if (obj == null)
-                return null;
-            var bf = new BinaryFormatter();
-            using (var ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms;
-            }
-        }
+        }        
     }
 }
