@@ -25,7 +25,7 @@
 
             // Read record marker.
             byte marker = reader.ReadByte();
-
+            Deleted = marker == 0x2A;
             // Read entire record as sequence of bytes.
             // Note that record length includes marker.
             byte[] row = reader.ReadBytes(header.RecordLength - 1);
@@ -55,7 +55,7 @@
             Data = new List<object>();
             foreach (DbfField field in fields) Data.Add(null);
         }
-
+        public bool Deleted { get; private set; }
         public List<object> Data { get; }
 
         public object this[int index] => Data[index];
@@ -79,7 +79,7 @@
                 return Data[index];
             }
         }
-
+        
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
@@ -115,11 +115,14 @@
 
             return string.Join(separator, fields.Select(z => string.Format(mask, z.Name, this[z])));
         }
-
+        internal void DeleteRecord()
+        {
+            Deleted = true;
+        }
         internal void Write(BinaryWriter writer, Encoding encoding)
         {
             // Write marker (always "not deleted")
-            writer.Write((byte)0x20);
+            writer.Write(Deleted ? (byte)0x2A : (byte)0x20);
 
             int index = 0;
             foreach (DbfField field in fields)

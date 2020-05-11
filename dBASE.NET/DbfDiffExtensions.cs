@@ -45,8 +45,8 @@ namespace dBASE.NET
             }            
             var recordDiff = new DbfRecordDiff();
             for (int i = 0; i < dbf.Fields.Count; i++){
-                var columnActualData = ObjectToByteArray(actualRecord.Data[i]);
-                var columnNewData = ObjectToByteArray(newRecord.Data[i]);    
+                var columnActualData = Utils.ObjectToByteArray(actualRecord.Data[i]);
+                var columnNewData = Utils.ObjectToByteArray(newRecord.Data[i]);    
                 if(!columnActualData.SequenceEqual(columnNewData)){
                     recordDiff.ColumnsChanged.Add(new DbfColumnChange{                        
                         Field = dbf.Fields[i],
@@ -59,18 +59,7 @@ namespace dBASE.NET
             recordDiff.Record = newRecord;
             return recordDiff;
             
-
-            static byte[] ObjectToByteArray(object obj)
-            {
-                if(obj == null)
-                    return null;
-                var bf = new BinaryFormatter();
-                using (var ms = new MemoryStream())
-                {
-                    bf.Serialize(ms, obj);
-                    return ms.ToArray();
-                }
-            }
+            
         }
         
         

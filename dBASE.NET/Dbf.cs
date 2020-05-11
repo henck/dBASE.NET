@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -11,8 +12,7 @@
     /// </summary>
     public class Dbf
     {
-        private DbfHeader header;
-
+        private DbfHeader header;        
         /// <summary>
         /// Initializes a new instance of the <see cref="Dbf" />.
         /// </summary>
@@ -64,21 +64,21 @@
         /// Opens a DBF file, reads the contents that initialize the current instance, and then closes the file.
         /// </summary>
         /// <param name="path">The file to read.</param>
-        public void Read(string path)
-        {
-            // Open stream for reading.
+        public void Read(string path,bool loadDeleted = true)
+        {            
+            // Open stream for reading.           
             using (FileStream baseStream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
                 string memoPath = GetMemoPath(path);
                 if (memoPath == null)
                 {
-                    Read(baseStream);
+                    Read(baseStream,loadDeleted:loadDeleted);
                 }
                 else
                 {
                     using (FileStream memoStream = File.Open(memoPath, FileMode.Open, FileAccess.Read))
                     {
-                        Read(baseStream, memoStream);
+                        Read(baseStream, memoStream,loadDeleted);
                     }
                 }
             }
@@ -89,7 +89,7 @@
         /// </summary>
         /// <param name="baseStream">Stream with a database.</param>
         /// <param name="memoStream">Stream with a memo.</param>
-        public void Read(Stream baseStream, Stream memoStream = null)
+        public void Read(Stream baseStream, Stream memoStream = null,bool loadDeleted = true)
         {
             if (baseStream == null)
             {
@@ -110,7 +110,7 @@
                 // After reading the fields, we move the read pointer to the beginning
                 // of the records, as indicated by the "HeaderLength" value in the header.
                 baseStream.Seek(header.HeaderLength, SeekOrigin.Begin);
-                ReadRecords(reader, memoData);
+                ReadRecords(reader, memoData,loadDeleted);
             }
         }
 
@@ -197,15 +197,23 @@
             reader.ReadByte();
         }
 
-        private void ReadRecords(BinaryReader reader, byte[] memoData)
+        private void ReadRecords(BinaryReader reader, byte[] memoData,bool loadDeleted)
         {
             Records.Clear();
 
             // Records are terminated by 0x1a char (officially), or EOF (also seen).
             while (reader.PeekChar() != 0x1a && reader.PeekChar() != -1)
             {
+                var isDeletedMarker = (byte)reader.PeekChar() == (byte)0x2A;
+                if (isDeletedMarker)
+                {
+                    reader.ReadBytes(header.RecordLength);
+                    continue;
+                }
                 try
                 {
+
+                    
                     Records.Add(new DbfRecord(reader, header, Fields, memoData, Encoding));
                 }
                 catch (EndOfStreamException) { }
@@ -233,7 +241,13 @@
             // Write EOF character.
             writer.Write((byte)0x1a);
         }
-
+        /// <summary>
+        /// Write the delete Mark as deleted
+        /// </summary>
+        public void DeleteRecord(int index)
+        {
+            this.Records[index].DeleteRecord();            
+        }
         private static string GetMemoPath(string basePath)
         {
             string memoPath = Path.ChangeExtension(basePath, "fpt");
