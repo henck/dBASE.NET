@@ -2,7 +2,7 @@
 {
     using System;
     using System.IO;
-
+    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -86,7 +86,61 @@
 
 			Assert.AreEqual("OUT THERE", dbf.Records[2][0], "Record content should be OUT THERE.");
 		}
+		[TestMethod]
+		public void WriteRecordAndDeleteIt()
+		{			
+			dbf = new Dbf();
+			var field = new DbfField("TEST", DbfFieldType.Character, 12);
+			dbf.Fields.Add(field);
+			var record = dbf.CreateRecord();
+			record.Data[0] = "HELLO WORLD ! DELETE ME!";
+			dbf.DeleteRecord(0);
+			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);			
+			dbf = new Dbf();
+			dbf.Read("test.dbf",false);
+			Assert.AreEqual(0, dbf.Records.Count,"dbf should have no records");
+		}
+		[TestMethod]
+		public void WriteMultipleRecordsAndDeleteOne()
+		{
+			var dbf = new Dbf();
+			var field = new DbfField("TEST", DbfFieldType.Character, 12);
+			dbf.Fields.Add(field);						
+			AddMultipleRecords(dbf,12);
+			dbf.DeleteRecord(0);
+			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
+			dbf = new Dbf();
+			dbf.Read("test.dbf", false);
+			Assert.AreEqual(11, dbf.Records.Count,"dbf should have 11 records");
+		}
+		[TestMethod]
+		public void WriteMultipleRecordsAndDeleteAll()
+		{
+			var dbf = new Dbf();
+			var field = new DbfField("TEST", DbfFieldType.Character, 12);
+			dbf.Fields.Add(field);
+			AddMultipleRecords(dbf, 12);
+			dbf.DeleteRecords(Enumerable.Range(0,12).ToArray());
+			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
+			dbf = new Dbf();
+			dbf.Read("test.dbf", false);
+			Assert.AreEqual(0, dbf.Records.Count, "dbf should have no record");
+		}
 
+		[TestMethod]
+		public void WriteRecordAndDeleteButLoadDeletedRecords()
+		{
+			dbf = new Dbf();
+			var field = new DbfField("TEST", DbfFieldType.Character, 12);
+			dbf.Fields.Add(field);
+			var record = dbf.CreateRecord();
+			record.Data[0] = "HELLO WORLD ! DELETE ME!";
+			dbf.DeleteRecord(0);
+			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
+			dbf = new Dbf();
+			dbf.Read("test.dbf");
+			Assert.AreEqual(0, dbf.Records.Count, "dbf should have no records");
+		}		
 		[TestMethod]
 		public void NumericField()
 		{
@@ -96,7 +150,6 @@
 			DbfRecord record = dbf.CreateRecord();
 			record.Data[0] = 3.14;
 			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
-
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
@@ -198,5 +251,16 @@
 
 			Assert.AreEqual((float) 4.34, dbf.Records[0][0], "Record content should be 4.34.");
 		}
+		private void AddMultipleRecords(Dbf dbf,int recordsLength)
+		{
+			for (int j = 0; j < recordsLength; ++j)
+			{
+				var record = dbf.CreateRecord();
+				for (int i = 0; i < dbf.Fields.Count; ++i)
+				{					
+					record.Data[i] = $"test field {i}";
+				}
+			}
+		}		
 	}
 }
