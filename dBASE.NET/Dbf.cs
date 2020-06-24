@@ -244,9 +244,21 @@
         /// <summary>
         /// Write the delete Mark as deleted
         /// </summary>
+        /// /// <param name="index">the index of the file to be deleted</param>
         public void DeleteRecord(int index)
         {
             this.Records[index].DeleteRecord();            
+        }
+        /// <summary>
+        /// Delete multiple records from theirs indexes on record list
+        /// </summary>
+        /// <param name="indexes"></param>
+        public void DeleteRecords(params int[] indexes)
+        {            
+            for (int i = 0; i < indexes.Length; i++)
+            {
+                DeleteRecord(indexes[i]);
+            }
         }
         private static string GetMemoPath(string basePath)
         {
