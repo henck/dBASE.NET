@@ -65,7 +65,6 @@
     <Compile Include="Dbase3WithMemo.cs" />
     <Compile Include="Dbase3WithoutMemo.cs" />
     <Compile Include="DBase4WithMemo.cs" />
-    <Compile Include="DbfComparerTests.cs" />
     <Compile Include="Encoders\CharacterEncoderTests.cs" />
     <Compile Include="Encoders\DateEncoderTests.cs" />
     <Compile Include="Encoders\NumericEncoderTests.cs" />
