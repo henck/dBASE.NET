@@ -109,7 +109,6 @@
     <Content Include="fixtures\CP866\SPXXXX0159.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fixtures\DbfComparer\diff_summary.txt" />
     <Content Include="fixtures\f5\dbase_f5_summary.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -266,22 +265,6 @@
     <Content Include="fixtures\fields\POST986.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="fixtures\DbfComparer\ModifiedSample\actual_modified_sample_records.csv" />
-    <None Include="fixtures\DbfComparer\ModifiedSample\DiffExampleActual.dbf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="fixtures\DbfComparer\ModifiedSample\DiffExampleNew.dbf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="fixtures\DbfComparer\ModifiedSample\new_modified_sample_records.csv" />
-    <None Include="fixtures\DbfComparer\NewSample\actual_records.csv" />
-    <None Include="fixtures\DbfComparer\NewSample\DiffExampleActual.dbf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="fixtures\DbfComparer\NewSample\DiffExampleNew.dbf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="fixtures\DbfComparer\NewSample\new_records.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dBASE.NET\dBASE.NET.csproj">
