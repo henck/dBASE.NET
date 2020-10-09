@@ -19,7 +19,7 @@
       Fix reading DbfField from file with `invalid` name.
     </PackageReleaseNotes>
     <PackageTags>dBASE dbf</PackageTags>
-    <TargetFrameworks>net461;net48;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
