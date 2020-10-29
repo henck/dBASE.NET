@@ -1,3 +1,5 @@
 .vs
 *.suo
 
+# JetBrains IDE settings directory
+.idea/
