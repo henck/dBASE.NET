@@ -9,31 +9,39 @@
         private CharacterEncoder() { }
 
         public static CharacterEncoder Instance => instance ??= new CharacterEncoder();
-        
-        public int GetFieldMaxSize(int fieldLength, Encoding encoding)
-        {
-            if (encoding.Equals(Encoding.UTF8))
-            {
-                return fieldLength * 4;
-            }
-            return fieldLength;
-        }
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
             // Input data maybe various: int, string, whatever.
-            string res = data?.ToString();
+            var res = data?.ToString();
             if (string.IsNullOrEmpty(res))
             {
                 res = field.DefaultValue;
             }
             else
             {
-                // Pad string with spaces or trim.
-                res = res.Length > field.Length
-                    ? res.Substring(0, field.Length)
-                    : res.PadRight(field.Length, ' ');
+                var resChars = res.ToCharArray();
+                res = string.Empty;
+                var resLength = 0;
+                var charIndex = -1;
+                while (resLength < field.Length)
+                {
+                    charIndex++;
+                    if (charIndex < resChars.Length)
+                    {
+                        var resCharLength = encoding.GetBytes(resChars[charIndex].ToString()).Length;
+                        if (resCharLength <= (field.Length - resLength))
+                        {
+                            res += resChars[charIndex];
+                            resLength += resCharLength;
+                            continue;
+                        }
+                    }
+
+                    res += ' ';
+                    resLength++;
+                }
             }
 
             // Convert string to byte array.
@@ -43,9 +51,8 @@
         /// <inheritdoc />
         public object Decode(byte[] buffer, byte[] memoData, Encoding encoding)
         {
-            string text = encoding.GetString(buffer).Trim();
-            if (text.Length == 0) return null;
-            return text;
+            var text = encoding.GetString(buffer).Trim();
+            return text.Length == 0 ? null : text;
         }
     }
 }

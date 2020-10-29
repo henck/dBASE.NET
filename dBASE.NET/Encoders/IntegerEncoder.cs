@@ -10,8 +10,6 @@
         private IntegerEncoder() { }
 
         public static IntegerEncoder Instance => instance ??= new IntegerEncoder();
-        
-        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 #pragma warning restore 1591
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

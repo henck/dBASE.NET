@@ -127,7 +127,7 @@
             {
                 var encoder = EncoderFactory.GetEncoder(field.Type);
                 var buffer = encoder.Encode(field, Data[index], encoding);
-                if (buffer.Length > encoder.GetFieldMaxSize(field.Length, encoding))
+                if (buffer.Length > field.Length)
                 {
                     throw new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, "Buffer length has exceeded length of the field.");
                 }

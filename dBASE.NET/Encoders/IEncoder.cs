@@ -7,7 +7,5 @@ namespace dBASE.NET.Encoders
         byte[] Encode(DbfField field, object data, Encoding encoding);
 
         object Decode(byte[] buffer, byte[] memoData, Encoding encoding);
-
-        int GetFieldMaxSize(int fieldLength, Encoding encoding);
     }
 }
