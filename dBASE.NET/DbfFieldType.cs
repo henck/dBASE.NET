@@ -11,6 +11,7 @@ namespace dBASE.NET
 	/// </summary>
 	public enum DbfFieldType
 	{
+#pragma warning disable 1591
 		Character = 'C',
 		Currency = 'Y',
 		Numeric = 'N',
@@ -24,5 +25,6 @@ namespace dBASE.NET
 		General = 'G',
 		Picture = 'P',
 		NullFlags = '0'
+#pragma warning restore 1591
 	}
 }

@@ -2,15 +2,17 @@
 {
     using System;
     using System.Text;
-
+#pragma warning disable 1591
     public class IntegerEncoder : IEncoder
     {
         private static IntegerEncoder instance;
 
         private IntegerEncoder() { }
 
-        public static IntegerEncoder Instance => instance ?? (instance = new IntegerEncoder());
-
+        public static IntegerEncoder Instance => instance ??= new IntegerEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
+#pragma warning restore 1591
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {

@@ -9,7 +9,9 @@
 
         private MemoEncoder() { }
 
-        public static MemoEncoder Instance => instance ?? (instance = new MemoEncoder());
+        public static MemoEncoder Instance => instance ??= new MemoEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

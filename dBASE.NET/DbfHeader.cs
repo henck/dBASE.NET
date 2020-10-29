@@ -37,7 +37,7 @@ namespace dBASE.NET
 		/// Record length in bytes.
 		/// </summary>
 		public ushort RecordLength { get; set; }
-
+#pragma warning disable 1591
 		public static DbfHeader CreateHeader(DbfVersion version)
 		{
 			DbfHeader header;
@@ -68,7 +68,7 @@ namespace dBASE.NET
 			header.Version = version;
 			return header;
 		}
-
+#pragma warning restore 1591
 		/// <summary>
 		/// Read the .dbf file header from the specified reader.
 		/// </summary>

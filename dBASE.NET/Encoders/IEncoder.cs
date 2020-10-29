@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace dBASE.NET.Encoders
 {
@@ -11,5 +7,7 @@ namespace dBASE.NET.Encoders
         byte[] Encode(DbfField field, object data, Encoding encoding);
 
         object Decode(byte[] buffer, byte[] memoData, Encoding encoding);
+
+        int GetFieldMaxSize(int fieldLength, Encoding encoding);
     }
 }

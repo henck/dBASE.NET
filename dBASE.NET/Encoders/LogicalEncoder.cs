@@ -8,7 +8,9 @@
 
         private LogicalEncoder() { }
 
-        public static LogicalEncoder Instance => instance ?? (instance = new LogicalEncoder());
+        public static LogicalEncoder Instance => instance ??= new LogicalEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

@@ -9,7 +9,9 @@
 
         private CurrencyEncoder() { }
 
-        public static CurrencyEncoder Instance => instance ?? (instance = new CurrencyEncoder());
+        public static CurrencyEncoder Instance => instance ??= new CurrencyEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

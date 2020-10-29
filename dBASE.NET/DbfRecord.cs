@@ -55,7 +55,7 @@
             Data = new List<object>();
             foreach (DbfField field in fields) Data.Add(null);
         }
-
+#pragma warning disable 1591
         public List<object> Data { get; }
 
         public object this[int index] => Data[index];
@@ -79,7 +79,8 @@
                 return Data[index];
             }
         }
-
+#pragma warning restore 1591
+        
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
@@ -121,13 +122,15 @@
             // Write marker (always "not deleted")
             writer.Write((byte)0x20);
 
-            int index = 0;
-            foreach (DbfField field in fields)
+            var index = 0;
+            foreach (var field in fields)
             {
-                IEncoder encoder = EncoderFactory.GetEncoder(field.Type);
-                byte[] buffer = encoder.Encode(field, Data[index], encoding);
-                if (buffer.Length > field.Length)
+                var encoder = EncoderFactory.GetEncoder(field.Type);
+                var buffer = encoder.Encode(field, Data[index], encoding);
+                if (buffer.Length > encoder.GetFieldMaxSize(field.Length, encoding))
+                {
                     throw new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, "Buffer length has exceeded length of the field.");
+                }
 
                 writer.Write(buffer);
                 index++;

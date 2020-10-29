@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+#pragma warning disable 1591
 	public enum DbfVersion
 	{
 		Unknown                          = 0x00,
@@ -21,4 +22,5 @@ namespace dBASE.NET
 		FoxPro2WithMemo                  = 0xF5, // DONE
 		FoxBASE                          = 0xFB
 	}
+#pragma warning restore 1591
 }

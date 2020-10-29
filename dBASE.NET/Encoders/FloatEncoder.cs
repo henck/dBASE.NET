@@ -10,7 +10,9 @@
 
         private FloatEncoder() { }
 
-        public static FloatEncoder Instance => instance ?? (instance = new FloatEncoder());
+        public static FloatEncoder Instance => instance ??= new FloatEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

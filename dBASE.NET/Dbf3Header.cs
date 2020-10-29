@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace dBASE.NET
 {
+#pragma warning disable 1591
 	public class Dbf3Header : DbfHeader
+#pragma warning restore 1591
 	{
 		internal override void Read(BinaryReader reader)
 		{

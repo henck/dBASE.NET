@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dBASE.NET", "dBASE.NET\dBASE.NET.csproj", "{6D931BBD-E331-4A20-90E8-FF7BB2A46E8F}"
+Project("{3150cf76-5cc7-4062-bd6b-632b1058108b}") = "dBASE.NET", "dBASE.NET\dBASE.NET.csproj", "{6D931BBD-E331-4A20-90E8-FF7BB2A46E8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dBASE.NET.Tests", "dBASE.NET.Tests\dBASE.NET.Tests.csproj", "{EE26BEE5-5B9F-4C95-A4E2-23050EE64DF9}"
 EndProject

@@ -9,7 +9,9 @@
 
         private DateTimeEncoder() { }
 
-        public static DateTimeEncoder Instance => instance ?? (instance = new DateTimeEncoder());
+        public static DateTimeEncoder Instance => instance ??= new DateTimeEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

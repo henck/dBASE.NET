@@ -10,7 +10,9 @@
 
         private NumericEncoder() { }
 
-        public static NumericEncoder Instance => instance ?? (instance = new NumericEncoder());
+        public static NumericEncoder Instance => instance ??= new NumericEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

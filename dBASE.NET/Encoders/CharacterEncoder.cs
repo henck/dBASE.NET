@@ -8,7 +8,16 @@
 
         private CharacterEncoder() { }
 
-        public static CharacterEncoder Instance => instance ?? (instance = new CharacterEncoder());
+        public static CharacterEncoder Instance => instance ??= new CharacterEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding)
+        {
+            if (encoding.Equals(Encoding.UTF8))
+            {
+                return fieldLength * 4;
+            }
+            return fieldLength;
+        }
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)

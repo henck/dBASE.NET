@@ -8,7 +8,9 @@
 
         private NullFlagsEncoder() { }
 
-        public static NullFlagsEncoder Instance => instance ?? (instance = new NullFlagsEncoder());
+        public static NullFlagsEncoder Instance => instance ??= new NullFlagsEncoder();
+        
+        public int GetFieldMaxSize(int fieldLength, Encoding encoding) => fieldLength;
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
