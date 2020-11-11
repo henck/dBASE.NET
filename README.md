@@ -1,6 +1,6 @@
-﻿# dBASE.NET - Read and write DBF files with .NET
+﻿# Adeotek.dBASE.NET - Read and write DBF files with .NET
 
-__dBASE.NET__ is a .NET class library used to read FoxBase, dBASE III and dBASE IV .dbf files. Data read
+__Adeotek.dBASE.NET__ is a .NET 5.0 class library used to read FoxBase, dBASE III and dBASE IV .dbf files. Data read
 from a file is returned as a list of typed fields and a list of records. This library is useful to add
 data import from dBASE sources to a .NET project.
 
@@ -10,26 +10,26 @@ may be added to it over time.
 
 There is [an article describing the dBASE file format](http://www.independent-software.com/dbase-dbf-dbt-file-format.html).
 
-## Installing dBASE.NET
+## Installing Adeotek.dBASE.NET
 
-dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
+Adeotek.dBASE.NET is available from [nuget](https://www.nuget.org/packages/Adeotek.dBASE.NET/):
 
 * Package manager:
 
 ```
-PM> Install-Package dBASE.NET -Version 1.2.2
+PM> Install-Package Adeotek.dBASE.NET -Version 1.3.0
 ```
 
 * .NET CLI:
 
 ```
-> dotnet add package dBASE.NET --version 1.2.2
+> dotnet add package Adeotek.dBASE.NET --version 1.3.0
 ```
    
 * Paket CLI:
 
 ```
-> paket add dBASE.NET --version 1.2.2
+> paket add Adeotek.dBASE.NET --version 1.3.0
 ```
 
 ## Opening a DBF file
@@ -110,6 +110,7 @@ http://yuml.me/diagram/scruffy/class/edit/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField
 
 ## Versions
 
+* Version 1.3.0: Migration to .NET 5.0 & Fix encoding UTF8 multi-byte characters
 * Version 1.2.2: Fix reading DbfField from file with `invalid` name.
 * Version 1.2.1: Fixed buffer overflow on write operation.
   Fixed trimming and padding on write operation.
@@ -117,3 +118,8 @@ http://yuml.me/diagram/scruffy/class/edit/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField
 * Version 1.2.0: Sign assembly.
 * Version 1.1.0: Add support for custom character encoding
 * Version 1.0.0: Initial release
+
+
+## Credits
+
+This project is forked from [dBASE.NET](https://github.com/henck/dBASE.NET) by [Independent Software](http://www.independent-software.com/)

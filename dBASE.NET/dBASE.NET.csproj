@@ -13,8 +13,8 @@
     <Authors>Independent Software / Alexander van Oostenrijk / George Benjamin-Schonberger</Authors>
     <Copyright>Copyright © AdeoTEK Software SRL 2021</Copyright>
     <AssemblyTitle>dBASE.NET Core</AssemblyTitle>
-    <AssemblyVersion>1.3.0.2</AssemblyVersion>
-    <FileVersion>1.3.0.2</FileVersion>
+    <AssemblyVersion>1.3.0.3</AssemblyVersion>
+    <FileVersion>1.3.0.3</FileVersion>
     <Version>1.3.0</Version>
     <PackageProjectUrl>https://github.com/adeotek/dBASE.NET/</PackageProjectUrl>
     <PackageLicense>https://github.com/adeotek/dBASE.NET/blob/main/README.md</PackageLicense>
@@ -22,9 +22,9 @@
     <RepositoryType>Git</RepositoryType>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageVersion>1.3.0-preview.2</PackageVersion>
+    <PackageVersion>1.3.0</PackageVersion>
     <PackageTags>dBASE dbf</PackageTags>
-    <PackageReleaseNotes>.NET 5.0 preview version</PackageReleaseNotes>
+    <PackageReleaseNotes>.NET 5.0 version</PackageReleaseNotes>
     <DocumentationFile>bin\$(Configuration)\dBASE.NET.xml</DocumentationFile>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <LangVersion>default</LangVersion>
