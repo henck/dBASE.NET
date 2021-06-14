@@ -61,6 +61,43 @@
         }
 
         /// <summary>
+        /// Add a list of entities to the DBF.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public IEnumerable<DbfRecord> AddEntities<T>(IEnumerable<T> entities)
+        {
+            var records = new List<DbfRecord>();
+
+            foreach (var entity in entities)
+            {
+                var record = CreateRecord();
+                record.FromEntity(entity);
+            }
+
+            return records;
+        }
+
+        /// <summary>
+        /// Get records from the DBF mapped into entities.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IEnumerable<T> GetEntities<T>()
+        {
+            var entities = new List<T>();
+
+            foreach (var record in Records)
+            {
+                var entity = (T) Activator.CreateInstance(typeof(T));
+                record.ToEntity(entity);
+            }
+
+            return entities;
+        }
+
+        /// <summary>
         /// Opens a DBF file, reads the contents that initialize the current instance, and then closes the file.
         /// </summary>
         /// <param name="path">The file to read.</param>
