@@ -88,7 +88,7 @@
         /// <returns></returns>
         public int GetFieldIndex(string fieldName)
         {
-            return fields.FindIndex(x => x.Name.Equals(fieldName));
+            return fields.FindIndex(x => x.Name.ToLower().Equals(fieldName.ToLower()));
         }
 
         /// <summary>
