@@ -112,6 +112,11 @@
             }
         }
 
+        /// <summary>
+        /// Fill values of the record from an entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
         public void FromEntity<T>(T obj)
         {
             var properties = GetDecoratedProperties(obj);
@@ -134,6 +139,11 @@
             }
         }
 
+        /// <summary>
+        /// Write values of the record into an entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
         public void ToEntity<T>(T obj)
         {
             var properties = GetDecoratedProperties(obj);
