@@ -70,6 +70,7 @@
     <Compile Include="Encoders\NumericEncoderTests.cs" />
     <Compile Include="FoxProWithMemo.cs" />
     <Compile Include="DbfRecordTests.cs" />
+    <Compile Include="EntityMapperTests.cs" />
     <Compile Include="VisualFoxPro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VisualFoxProWithAI.cs" />
@@ -265,6 +266,9 @@
     <Content Include="fixtures\fields\POST986.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="fixtures\mapper\mapper.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dBASE.NET\dBASE.NET.csproj">

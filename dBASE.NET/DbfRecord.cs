@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
 
     /// <summary>
@@ -64,7 +65,7 @@
         {
             get
             {
-                int index = fields.FindIndex(x => x.Name.Equals(name));
+                int index = GetFieldIndex(name);
                 if (index == -1) return null;
                 return Data[index];
             }
@@ -74,10 +75,116 @@
         {
             get
             {
-                int index = fields.IndexOf(field);
+                int index = GetFieldIndex(field);
                 if (index == -1) return null;
                 return Data[index];
             }
+        }
+
+        /// <summary>
+        /// Return the index of the field by its name.
+        /// </summary>
+        /// <param name="fieldName">Name of the field</param>
+        /// <returns></returns>
+        public int GetFieldIndex(string fieldName)
+        {
+            return fields.FindIndex(x => x.Name.ToLower().Equals(fieldName.ToLower()));
+        }
+
+        /// <summary>
+        /// Return the index of a field
+        /// </summary>
+        /// <param name="field">The field</param>
+        /// <returns></returns>
+        public int GetFieldIndex(DbfField field)
+        {
+            return fields.IndexOf(field);
+        }
+
+        /// <summary>
+        /// Return the list of fields in the current record.
+        /// </summary>
+        public List<DbfField> Fields
+        {
+            get
+            {
+                return fields;
+            }
+        }
+
+        /// <summary>
+        /// Fill values of the record from an entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        public void FromEntity<T>(T obj)
+        {
+            var properties = GetDecoratedProperties(obj);
+
+            foreach (var property in properties)
+            {
+                var attribute = property.GetCustomAttribute(typeof(DbfFieldAttribute)) as DbfFieldAttribute;
+
+                if (attribute == null)
+                {
+                    throw new InvalidOperationException(
+                        $"Property {property.Name} does not have the DbfField attribute!"
+                    );
+                }
+
+                if (property.CanRead)
+                {
+                    Data[GetFieldIndex(attribute.Name)] = property.GetValue(obj);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Write values of the record into an entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        public void ToEntity<T>(T obj)
+        {
+            var properties = GetDecoratedProperties(obj);
+
+            foreach (var property in properties)
+            {
+                var attribute = property.GetCustomAttribute(typeof(DbfFieldAttribute)) as DbfFieldAttribute;
+
+                if(attribute == null)
+                {
+                    throw new InvalidOperationException(
+                        $"Property {property.Name} does not have the DbfField attribute!"
+                    );
+                }
+
+                if(property.CanWrite)
+                {
+                    property.SetValue(obj, Data[GetFieldIndex(attribute.Name)]);
+                }
+            }
+        }
+
+        internal PropertyInfo[] GetDecoratedProperties(object obj)
+        {
+            var decoratedProperties = new List<PropertyInfo>();
+
+            var allProperties = obj.GetType().GetProperties();
+
+            foreach (var property in allProperties)
+            {
+                var attributes = property.GetCustomAttributes();
+                foreach (var attr in attributes)
+                {
+                    if(attr is DbfFieldAttribute)
+                    {
+                        decoratedProperties.Add(property);
+                    }
+                }
+            }
+
+            return decoratedProperties.ToArray();
         }
 
         /// <summary>
