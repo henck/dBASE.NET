@@ -60,6 +60,13 @@
             return record;
         }
 
+        public DbfRecord CreateRecord<T>(T entity)
+        {
+            var record = CreateRecord();
+            record.FromEntity(entity);
+            return record;
+        }
+
         /// <summary>
         /// Add a list of entities to the DBF.
         /// </summary>
@@ -72,8 +79,7 @@
 
             foreach (var entity in entities)
             {
-                var record = CreateRecord();
-                record.FromEntity(entity);
+                records.Add(CreateRecord(entity));
             }
 
             return records;
@@ -92,6 +98,7 @@
             {
                 var entity = (T) Activator.CreateInstance(typeof(T));
                 record.ToEntity(entity);
+                entities.Add(entity);
             }
 
             return entities;

@@ -82,7 +82,7 @@
         }
 
         /// <summary>
-        /// Return the index of the field by it's name.
+        /// Return the index of the field by its name.
         /// </summary>
         /// <param name="fieldName">Name of the field</param>
         /// <returns></returns>
