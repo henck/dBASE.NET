@@ -67,7 +67,7 @@
         public void Read(string path)
         {
             // Open stream for reading.
-            using (FileStream baseStream = File.Open(path, FileMode.Open, FileAccess.Read))
+            using (FileStream baseStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 string memoPath = GetMemoPath(path);
                 if (memoPath == null)
@@ -76,7 +76,7 @@
                 }
                 else
                 {
-                    using (FileStream memoStream = File.Open(memoPath, FileMode.Open, FileAccess.Read))
+                    using (FileStream memoStream = File.Open(memoPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         Read(baseStream, memoStream);
                     }
@@ -101,7 +101,9 @@
             }
 
             baseStream.Seek(0, SeekOrigin.Begin);
-            using (BinaryReader reader = new BinaryReader(baseStream))
+
+            //using (BinaryReader reader = new BinaryReader(baseStream))
+            using (BinaryReader reader = new BinaryReader(baseStream, Encoding.ASCII))          //ReadFields() use PeekChar to detect end flag=0D, default Encoding may be UTF8 then clause exception
             {
                 ReadHeader(reader);
                 byte[] memoData = memoStream != null ? ReadMemos(memoStream) : null;
