@@ -91,10 +91,20 @@
         {
             // Pad field name with 0-bytes, then save it.
             string name = this.Name;
-            if (name.Length > 11) name = name.Substring(0, 11);
-            while (name.Length < 11) name += '\0';
+
+            // consider multibyte should truncate or padding after GetBytes (11 bytes)
             byte[] nameBytes = encoding.GetBytes(name);
-            writer.Write(nameBytes); // 11 bytes.
+            if (nameBytes.Length < 11)
+            {
+                writer.Write(nameBytes);
+
+                var padlen = 11 - nameBytes.Length;
+                writer.Write(new byte[padlen]);
+            }
+            else
+            {
+                writer.Write(nameBytes, 0, 11);
+            }
 
             writer.Write((char)Type);
             writer.Write((uint)0); // 4 reserved bytes: Field data address in memory.
