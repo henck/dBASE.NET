@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <ProjectGuid>{3150cf76-5cc7-4062-bd6b-632b1058108b}</ProjectGuid>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Library</OutputType>
     <PackageId>Adeotek.dBASE.NET</PackageId>
     <PackageTags>netopes,blazor,ui</PackageTags>
@@ -13,16 +15,16 @@
     <Authors>Independent Software / Alexander van Oostenrijk / George Benjamin-Schonberger</Authors>
     <Copyright>Copyright © AdeoTEK Software SRL 2021</Copyright>
     <AssemblyTitle>dBASE.NET Core</AssemblyTitle>
-    <AssemblyVersion>1.3.0.3</AssemblyVersion>
-    <FileVersion>1.3.0.3</FileVersion>
-    <Version>1.3.0</Version>
+    <AssemblyVersion>1.4.0.4</AssemblyVersion>
+    <FileVersion>1.4.0.4</FileVersion>
+    <Version>1.4.0</Version>
     <PackageProjectUrl>https://github.com/adeotek/dBASE.NET/</PackageProjectUrl>
     <PackageLicense>https://github.com/adeotek/dBASE.NET/blob/main/README.md</PackageLicense>
     <RepositoryUrl>https://github.com/adeotek/dBASE.NET/</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageVersion>1.3.0</PackageVersion>
+    <PackageVersion>1.4.0</PackageVersion>
     <PackageTags>dBASE dbf</PackageTags>
     <PackageReleaseNotes>.NET 5.0 version</PackageReleaseNotes>
     <DocumentationFile>bin\$(Configuration)\dBASE.NET.xml</DocumentationFile>

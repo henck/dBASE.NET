@@ -1,33 +1,32 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace dBASE.NET.Tests
 {
 	/// <summary>
 	/// DBase4WithMemo is version 0x8b.
 	/// </summary>
-	[TestClass]
+	
 	public class DBase4WithMemo
 	{
 		Dbf dbf;
 
-		[TestInitialize]
-		public void testInit()
+		public DBase4WithMemo()
 		{
 			dbf = new Dbf();
 			dbf.Read("fixtures/8b/dbase_8b.dbf");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void RecordCount()
 		{
-			Assert.AreEqual(10, dbf.Records.Count, "Should read 10 records");
+			AssertX.Equal(10, dbf.Records.Count, "Should read 10 records");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FieldCount()
 		{
-			Assert.AreEqual(6, dbf.Fields.Count, "Should read 6 fields");
+			AssertX.Equal(6, dbf.Fields.Count, "Should read 6 fields");
 		}
 	}
 }

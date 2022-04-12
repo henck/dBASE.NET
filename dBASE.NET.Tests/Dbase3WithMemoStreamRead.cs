@@ -1,19 +1,18 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace dBASE.NET.Tests
 {
     /// <summary>
     /// DBase3WithMemo is version 0x83.
     /// </summary>
-    [TestClass]
+    
     public class Dbase3WithMemoStreamRead
     {
         Dbf dbf;
 
-        [TestInitialize]
-        public void testInit()
+        public Dbase3WithMemoStreamRead()
         {
             dbf = new Dbf();
 
@@ -22,16 +21,16 @@ namespace dBASE.NET.Tests
                 dbf.Read(baseStream, memoStream);
         }
 
-        [TestMethod]
+        [Fact]
         public void RecordCount()
         {
-            Assert.AreEqual(67, dbf.Records.Count, "Should read 67 records");
+            AssertX.Equal(67, dbf.Records.Count, "Should read 67 records");
         }
 
-        [TestMethod]
+        [Fact]
         public void FieldCount()
         {
-            Assert.AreEqual(15, dbf.Fields.Count, "Should read 15 fields");
+            AssertX.Equal(15, dbf.Fields.Count, "Should read 15 fields");
         }
     }
 }

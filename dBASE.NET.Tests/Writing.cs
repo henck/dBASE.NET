@@ -3,17 +3,12 @@
     using System;
     using System.IO;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
+    
 	public class Writing
 	{
 		Dbf dbf;
-
-		[TestInitialize]
-		public void testInit()
-		{
-		}
 
 		private byte[] ReadBytes()
 		{
@@ -27,17 +22,17 @@
 			return data;
 		}
 
-		[TestMethod]
+		[Fact]
 		public void WriteNoData()
 		{
 			dbf = new Dbf();
 			dbf.Write("test.dbf", DbfVersion.VisualFoxPro);
 
 			byte[] data = ReadBytes();
-			Assert.AreEqual(0x30, data[0], "Version should be 0x30.");
+			AssertX.Equal(0x30, data[0], "Version should be 0x30.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void WriteOneField()
 		{
 			dbf = new Dbf();
@@ -48,10 +43,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual("TEST", dbf.Fields[0].Name, "Field name should be TEST.");
+			AssertX.Equal("TEST", dbf.Fields[0].Name, "Field name should be TEST.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void WriteFieldAndRecord()
 		{
 			dbf = new Dbf();
@@ -64,10 +59,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual("HELLO", dbf.Records[0][0], "Record content should be HELLO.");
+			AssertX.Equal("HELLO", dbf.Records[0][0], "Record content should be HELLO.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void WriteFieldAndThreeRecords()
 		{
 			dbf = new Dbf();
@@ -84,10 +79,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual("OUT THERE", dbf.Records[2][0], "Record content should be OUT THERE.");
+			AssertX.Equal("OUT THERE", dbf.Records[2][0], "Record content should be OUT THERE.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void NumericField()
 		{
 			dbf = new Dbf();
@@ -100,10 +95,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(3.14, dbf.Records[0][0], "Record content should be 3.14.");
+			AssertX.Equal(3.14, dbf.Records[0][0], "Record content should be 3.14.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FloatField()
 		{
 			dbf = new Dbf();
@@ -116,10 +111,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(3.14f, dbf.Records[0][0], "Record content should be 3.14.");
+			AssertX.Equal(3.14f, dbf.Records[0][0], "Record content should be 3.14.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void LogicalField()
 		{
 			dbf = new Dbf();
@@ -132,10 +127,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(true, dbf.Records[0][0], "Record content should be TRUE.");
+			AssertX.Equal(true, dbf.Records[0][0], "Record content should be TRUE.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void DateField()
 		{
 			dbf = new Dbf();
@@ -148,10 +143,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(new DateTime(2018, 8, 7), dbf.Records[0][0], "Record content should be 2018-08-07.");
+			AssertX.Equal(new DateTime(2018, 8, 7), dbf.Records[0][0], "Record content should be 2018-08-07.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void DateTimeField()
 		{
 			dbf = new Dbf();
@@ -164,10 +159,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(new DateTime(2018, 8, 7, 20, 15, 8), dbf.Records[0][0], "Record content should be 2018-08-07 20:15:08.");
+			AssertX.Equal(new DateTime(2018, 8, 7, 20, 15, 8), dbf.Records[0][0], "Record content should be 2018-08-07 20:15:08.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void IntegerField()
 		{
 			dbf = new Dbf();
@@ -180,10 +175,10 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual(34, dbf.Records[0][0], "Record content should be 34.");
+			AssertX.Equal(34, dbf.Records[0][0], "Record content should be 34.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CurrencyField()
 		{
 			dbf = new Dbf();
@@ -196,7 +191,7 @@
 			dbf = new Dbf();
 			dbf.Read("test.dbf");
 
-			Assert.AreEqual((float) 4.34, dbf.Records[0][0], "Record content should be 4.34.");
+			AssertX.Equal((float) 4.34, dbf.Records[0][0], "Record content should be 4.34.");
 		}
 	}
 }

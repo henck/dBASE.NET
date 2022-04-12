@@ -1,115 +1,112 @@
-﻿namespace dBASE.NET.Tests
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Xunit;
+
+namespace dBASE.NET.Tests;
+
+public class CustomEncoding
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
+    private readonly List<DbfField> fields;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    private readonly Dictionary<string, object> data;
 
-    [TestClass]
-    public class CustomEncoding
+    private readonly Encoding encoding;
+
+    public CustomEncoding()
     {
-        private readonly List<DbfField> fields;
-
-        private readonly Dictionary<string, object> data;
-
-        private readonly Encoding encoding;
-
-        public CustomEncoding()
+        fields = new List<DbfField>
         {
-            fields = new List<DbfField>
-            {
-                new DbfField("OTD", DbfFieldType.Character, 4),
-                new DbfField("FIL", DbfFieldType.Character, 5),
-                new DbfField("SCHET", DbfFieldType.Character, 20),
-                new DbfField("KV", DbfFieldType.Character, 2),
-                new DbfField("SUMMA", DbfFieldType.Numeric, 10, 2),
-                new DbfField("FAM", DbfFieldType.Character, 30),
-                new DbfField("NAME", DbfFieldType.Character, 20),
-                new DbfField("OTCH", DbfFieldType.Character, 20),
-                new DbfField("DOC", DbfFieldType.Numeric, 2),
-                new DbfField("DOCSER", DbfFieldType.Character, 10),
-                new DbfField("DOCNUM", DbfFieldType.Character, 10),
-                new DbfField("DOCVYD", DbfFieldType.Character, 50),
-                new DbfField("DOCDATE", DbfFieldType.Date, 8),
-                new DbfField("BDATE", DbfFieldType.Date, 8),
-                new DbfField("TNOMER", DbfFieldType.Character, 7),
-                new DbfField("KODI", DbfFieldType.Character, 2),
-                new DbfField("KODZ", DbfFieldType.Numeric, 9, 2)
-            };
+            new ("OTD", DbfFieldType.Character, 4),
+            new ("FIL", DbfFieldType.Character, 5),
+            new ("SCHET", DbfFieldType.Character, 20),
+            new ("KV", DbfFieldType.Character, 2),
+            new ("SUMMA", DbfFieldType.Numeric, 10, 2),
+            new ("FAM", DbfFieldType.Character, 30),
+            new ("NAME", DbfFieldType.Character, 20),
+            new ("OTCH", DbfFieldType.Character, 20),
+            new ("DOC", DbfFieldType.Numeric, 2),
+            new ("DOCSER", DbfFieldType.Character, 10),
+            new ("DOCNUM", DbfFieldType.Character, 10),
+            new ("DOCVYD", DbfFieldType.Character, 50),
+            new ("DOCDATE", DbfFieldType.Date, 8),
+            new ("BDATE", DbfFieldType.Date, 8),
+            new ("TNOMER", DbfFieldType.Character, 7),
+            new ("KODI", DbfFieldType.Character, 2),
+            new ("KODZ", DbfFieldType.Numeric, 9, 2)
+        };
 
-            data = new Dictionary<string, object>
-            {
-                { "SCHET", "123456789" },
-                { "KV", "00" },
-                { "SUMMA", 1300.52 },
-                { "FAM", "ПОРОШЕНКО" },
-                { "NAME", "ПЕТР" },
-                { "OTCH", "АЛЕКСЕЕВИЧ" },
-                { "KODI", "02" },
-            };
+        data = new Dictionary<string, object>
+        {
+            { "SCHET", "123456789" },
+            { "KV", "00" },
+            { "SUMMA", 1300.52 },
+            { "FAM", "ПОРОШЕНКО" },
+            { "NAME", "ПЕТР" },
+            { "OTCH", "АЛЕКСЕЕВИЧ" },
+            { "KODI", "02" },
+        };
 
-            encoding = Encoding.GetEncoding(866);
+        encoding = Encoding.GetEncoding(866);
+    }
+
+    [Fact]
+    public void ReadCP866()
+    {
+        // Arrange.
+        var standard = ReadStandard();
+
+        // Assert.
+        var row = standard.Records[0];
+        foreach (var field in fields)
+        {
+            var item = data.ContainsKey(field.Name) ? data[field.Name] : null;
+            Assert.Equal(item, row[fields.IndexOf(field)]);
         }
+    }
 
-        [TestMethod]
-        public void ReadCP866()
+    [Fact]
+    public void WriteCP866()
+    {
+        // Arrange.
+        var standard = ReadStandard();
+
+        var dbf = new Dbf(encoding);
+        fields.ForEach(x => dbf.Fields.Add(x));
+
+        DbfRecord record = dbf.CreateRecord();
+        foreach (var field in fields)
         {
-            // Arrange.
-            var standard = ReadStandard();
-
-            // Assert.
-            var row = standard.Records[0];
-            foreach (var field in fields)
+            object item = null;
+            try
             {
-                var item = data.ContainsKey(field.Name) ? data[field.Name] : null;
-                Assert.AreEqual(item, row[fields.IndexOf(field)]);
+                item = data[field.Name];
             }
-        }
-
-        [TestMethod]
-        public void WriteCP866()
-        {
-            // Arrange.
-            var standard = ReadStandard();
-
-            var dbf = new Dbf(encoding);
-            fields.ForEach(x => dbf.Fields.Add(x));
-
-            DbfRecord record = dbf.CreateRecord();
-            foreach (var field in fields)
+            catch (Exception)
             {
-                object item = null;
-                try
-                {
-                    item = data[field.Name];
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-
-                record.Data[fields.IndexOf(field)] = item;
+                // ignored
             }
 
-            // Act.
-            dbf.Write("test.dbf", DbfVersion.FoxBaseDBase3NoMemo);
-
-            // Assert.
-            var rowStd = standard.Records[0];
-            var row = dbf.Records[0];
-            foreach (var field in fields)
-            {
-                Assert.AreEqual(rowStd[field.Name], row[field.Name]);
-            }
+            record.Data[fields.IndexOf(field)] = item;
         }
 
-        private Dbf ReadStandard()
+        // Act.
+        dbf.Write("test.dbf", DbfVersion.FoxBaseDBase3NoMemo);
+
+        // Assert.
+        var rowStd = standard.Records[0];
+        var row = dbf.Records[0];
+        foreach (var field in fields)
         {
-            var standard = new Dbf(encoding);
-            standard.Read("fixtures/CP866/SPXXXX0159.dbf");
-
-            return standard;
+            Assert.Equal(rowStd[field.Name], row[field.Name]);
         }
+    }
+
+    private Dbf ReadStandard()
+    {
+        var standard = new Dbf(encoding);
+        standard.Read("fixtures/CP866/SPXXXX0159.dbf");
+
+        return standard;
     }
 }

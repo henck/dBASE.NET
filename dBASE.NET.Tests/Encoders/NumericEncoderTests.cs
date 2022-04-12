@@ -4,9 +4,9 @@
 
     using dBASE.NET.Encoders;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
+    
     public class NumericEncoderTests
     {
         private readonly DbfField numericField = new DbfField("SUMMA", DbfFieldType.Numeric, 10, 2);
@@ -15,7 +15,7 @@
 
         private readonly Encoding encoding = Encoding.ASCII;
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDecimalOverLength()
         {
             // Arrange.
@@ -29,11 +29,11 @@
             // Assert.
             for (int i = 0; i < numericField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDecimalOverPrecision()
         {
             // Arrange.
@@ -47,11 +47,11 @@
             // Assert.
             for (int i = 0; i < numericField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDecimalUnderPrecision()
         {
             // Arrange.
@@ -65,11 +65,11 @@
             // Assert.
             for (int i = 0; i < numericField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDecimalNull()
         {
             // Arrange.
@@ -83,11 +83,11 @@
             // Assert.
             for (int i = 0; i < numericField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestNumber()
         {
             // Arrange.
@@ -101,7 +101,7 @@
             // Assert.
             for (int i = 0; i < numericField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
     }

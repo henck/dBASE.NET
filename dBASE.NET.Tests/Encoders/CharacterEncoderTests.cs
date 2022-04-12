@@ -1,19 +1,21 @@
-﻿namespace dBASE.NET.Tests.Encoders
+﻿using Xunit.Sdk;
+
+namespace dBASE.NET.Tests.Encoders
 {
     using System.Text;
 
     using dBASE.NET.Encoders;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
+    
     public class CharacterEncoderTests
     {
-        private readonly DbfField characterField = new DbfField("NOMDOC", DbfFieldType.Character, 10);
+        private readonly DbfField characterField = new("NOMDOC", DbfFieldType.Character, 10);
 
         private readonly Encoding encoding = Encoding.ASCII;
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestStringShort()
         {
             // Arrange.
@@ -25,13 +27,13 @@
             var encodedVal = CharacterEncoder.Instance.Encode(characterField, val, encoding);
 
             // Assert.
-            for (int i = 0; i < characterField.Length; i++)
+            for (var i = 0; i < characterField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestStringLong()
         {
             // Arrange.
@@ -43,13 +45,13 @@
             var encodedVal = CharacterEncoder.Instance.Encode(characterField, val, encoding);
 
             // Assert.
-            for (int i = 0; i < characterField.Length; i++)
+            for (var i = 0; i < characterField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestStringNull()
         {
             // Arrange.
@@ -61,9 +63,9 @@
             var encodedVal = CharacterEncoder.Instance.Encode(characterField, val, encoding);
 
             // Assert.
-            for (int i = 0; i < characterField.Length; i++)
+            for (var i = 0; i < characterField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
     }

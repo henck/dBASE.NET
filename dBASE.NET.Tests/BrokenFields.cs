@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
+    
     public class BrokenFields
     {
         private readonly List<DbfField> fields;
@@ -13,38 +13,38 @@
         {
             fields = new List<DbfField>
             {
-                new DbfField("NUM", DbfFieldType.Numeric, 6),
-                new DbfField("CODE", DbfFieldType.Character, 15),
-                new DbfField("F", DbfFieldType.Character, 30),
-                new DbfField("I", DbfFieldType.Character, 30),
-                new DbfField("O", DbfFieldType.Character, 30),
-                new DbfField("DOC", DbfFieldType.Character, 100),
-                new DbfField("SERIES", DbfFieldType.Character, 7),
-                new DbfField("NUMBER", DbfFieldType.Character, 7),
-                new DbfField("DATAISSUE", DbfFieldType.Character, 200),
-                new DbfField("ZIP", DbfFieldType.Numeric, 6),
-                new DbfField("ADDRESS", DbfFieldType.Character, 200),
-                new DbfField("SNILS", DbfFieldType.Character, 11),
-                new DbfField("SUM", DbfFieldType.Numeric, 12, 2),
-                new DbfField("MONTH", DbfFieldType.Character, 15),
-                new DbfField("YEAR", DbfFieldType.Numeric, 4),
-                new DbfField("NOTE", DbfFieldType.Character, 255),
-                new DbfField("REASON", DbfFieldType.Character, 128),
-                new DbfField("PERS_NUM", DbfFieldType.Character, 14)
+                new("NUM", DbfFieldType.Numeric, 6),
+                new("CODE", DbfFieldType.Character, 15),
+                new("F", DbfFieldType.Character, 30),
+                new("I", DbfFieldType.Character, 30),
+                new("O", DbfFieldType.Character, 30),
+                new("DOC", DbfFieldType.Character, 100),
+                new("SERIES", DbfFieldType.Character, 7),
+                new("NUMBER", DbfFieldType.Character, 7),
+                new("DATAISSUE", DbfFieldType.Character, 200),
+                new("ZIP", DbfFieldType.Numeric, 6),
+                new("ADDRESS", DbfFieldType.Character, 200),
+                new("SNILS", DbfFieldType.Character, 11),
+                new("SUM", DbfFieldType.Numeric, 12, 2),
+                new("MONTH", DbfFieldType.Character, 15),
+                new("YEAR", DbfFieldType.Numeric, 4),
+                new("NOTE", DbfFieldType.Character, 255),
+                new("REASON", DbfFieldType.Character, 128),
+                new("PERS_NUM", DbfFieldType.Character, 14)
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadBrokenFieldsTest()
         {
             // Arrange.
             var dbf = ReadBrokenFields();
 
             // Assert.
-            Assert.AreEqual(fields.Count, dbf.Fields.Count);
+            Assert.Equal(fields.Count, dbf.Fields.Count);
             for (int i = 0; i < fields.Count; i++)
             {
-                Assert.AreEqual(fields[i], dbf.Fields[i]);
+                Assert.Equal(fields[i], dbf.Fields[i]);
             }
         }
 

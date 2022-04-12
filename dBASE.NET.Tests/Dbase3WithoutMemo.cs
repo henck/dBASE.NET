@@ -1,51 +1,50 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace dBASE.NET.Tests
 {
 	/// <summary>
 	/// DBase3WithoutMemo is version 0x03.
 	/// </summary>
-	[TestClass]
+	
 	public class DBase3WithoutMemo
 	{
 		Dbf dbf;
 
-		[TestInitialize]
-		public void testInit()
+		public DBase3WithoutMemo()
 		{
 			dbf = new Dbf();
 			dbf.Read("fixtures/03/dbase_03.dbf");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void RecordCount()
 		{
-			Assert.AreEqual(14, dbf.Records.Count, "Should read 14 records");
+			AssertX.Equal(14, dbf.Records.Count, "Should read 14 records");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FieldCount()
 		{
-			Assert.AreEqual(31, dbf.Fields.Count, "Should read 31 fields");
+			AssertX.Equal(31, dbf.Fields.Count, "Should read 31 fields");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FieldNames()
 		{
-			Assert.AreEqual("Point_ID", dbf.Fields[0].Name, "First field name should be 'Point_ID'");
+			AssertX.Equal("Point_ID", dbf.Fields[0].Name, "First field name should be 'Point_ID'");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FieldLength()
 		{
-			Assert.AreEqual(12, dbf.Fields[0].Length, "Point_ID field length must be 12.");
+			AssertX.Equal(12, dbf.Fields[0].Length, "Point_ID field length must be 12.");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void FieldPrecision()
 		{
-			Assert.AreEqual(3, dbf.Fields[23].Precision, "GPS_Second field length must be 3.");
+			AssertX.Equal(3, dbf.Fields[23].Precision, "GPS_Second field length must be 3.");
 		}
 	}
 }

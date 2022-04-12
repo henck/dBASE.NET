@@ -5,16 +5,16 @@
 
     using dBASE.NET.Encoders;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
+    
     public class DateEncoderTests
     {
         private readonly DbfField dateField = new DbfField("DATADOC", DbfFieldType.Date, 8);
 
         private readonly Encoding encoding = Encoding.ASCII;
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDateValid()
         {
             // Arrange.
@@ -28,11 +28,11 @@
             // Assert.
             for (int i = 0; i < dateField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EncodeTestDateNull()
         {
             // Arrange.
@@ -46,7 +46,7 @@
             // Assert.
             for (int i = 0; i < dateField.Length; i++)
             {
-                Assert.AreEqual(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
+                AssertX.Equal(expectedEncodedVal[i], encodedVal[i], $"Position `{i}` failed.");
             }
         }
     }
