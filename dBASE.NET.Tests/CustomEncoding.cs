@@ -8,13 +8,14 @@ namespace dBASE.NET.Tests;
 public class CustomEncoding
 {
     private readonly List<DbfField> fields;
-
     private readonly Dictionary<string, object> data;
-
     private readonly Encoding encoding;
+    private readonly Dbf standardDbf;
 
     public CustomEncoding()
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        
         fields = new List<DbfField>
         {
             new ("OTD", DbfFieldType.Character, 4),
@@ -48,16 +49,16 @@ public class CustomEncoding
         };
 
         encoding = Encoding.GetEncoding(866);
+        
+        standardDbf = new Dbf(encoding);
+        standardDbf.Read("fixtures/CP866/SPXXXX0159.dbf");
     }
 
     [Fact]
     public void ReadCP866()
     {
-        // Arrange.
-        var standard = ReadStandard();
-
         // Assert.
-        var row = standard.Records[0];
+        var row = standardDbf.Records[0];
         foreach (var field in fields)
         {
             var item = data.ContainsKey(field.Name) ? data[field.Name] : null;
@@ -69,12 +70,10 @@ public class CustomEncoding
     public void WriteCP866()
     {
         // Arrange.
-        var standard = ReadStandard();
-
         var dbf = new Dbf(encoding);
         fields.ForEach(x => dbf.Fields.Add(x));
 
-        DbfRecord record = dbf.CreateRecord();
+        var record = dbf.CreateRecord();
         foreach (var field in fields)
         {
             object item = null;
@@ -91,22 +90,14 @@ public class CustomEncoding
         }
 
         // Act.
-        dbf.Write("test.dbf", DbfVersion.FoxBaseDBase3NoMemo);
+        dbf.Write("test_custom_encoding.dbf", DbfVersion.FoxBaseDBase3NoMemo);
 
         // Assert.
-        var rowStd = standard.Records[0];
+        var rowStd = standardDbf.Records[0];
         var row = dbf.Records[0];
         foreach (var field in fields)
         {
             Assert.Equal(rowStd[field.Name], row[field.Name]);
         }
-    }
-
-    private Dbf ReadStandard()
-    {
-        var standard = new Dbf(encoding);
-        standard.Read("fixtures/CP866/SPXXXX0159.dbf");
-
-        return standard;
     }
 }

@@ -1,6 +1,6 @@
 ﻿# Adeotek.dBASE.NET - Read and write DBF files with .NET
 
-__Adeotek.dBASE.NET__ is a .NET 5.0 class library used to read FoxBase, dBASE III and dBASE IV .dbf files. Data read
+__Adeotek.dBASE.NET__ is a .NET 6 class library used to read FoxBase, dBASE III and dBASE IV .dbf files. Data read
 from a file is returned as a list of typed fields and a list of records. This library is useful to add
 data import from dBASE sources to a .NET project.
 
@@ -17,19 +17,19 @@ Adeotek.dBASE.NET is available from [nuget](https://www.nuget.org/packages/Adeot
 * Package manager:
 
 ```
-PM> Install-Package Adeotek.dBASE.NET -Version 1.3.0
+PM> Install-Package Adeotek.dBASE.NET -Version 1.4.0
 ```
 
 * .NET CLI:
 
 ```
-> dotnet add package Adeotek.dBASE.NET --version 1.3.0
+> dotnet add package Adeotek.dBASE.NET --version 1.4.0
 ```
    
 * Paket CLI:
 
 ```
-> paket add Adeotek.dBASE.NET --version 1.3.0
+> paket add Adeotek.dBASE.NET --version 1.4.0
 ```
 
 ## Opening a DBF file
@@ -110,6 +110,7 @@ http://yuml.me/diagram/scruffy/class/edit/[Dbf]+->[DbfRecord], [Dbf]+->[DbfField
 
 ## Versions
 
+* Version 1.4.0: Migration to .NET 6 & xUnit
 * Version 1.3.0: Migration to .NET 5.0 & Fix encoding UTF8 multi-byte characters
 * Version 1.2.2: Fix reading DbfField from file with `invalid` name.
 * Version 1.2.1: Fixed buffer overflow on write operation.
