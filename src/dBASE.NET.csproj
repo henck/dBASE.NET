@@ -1,35 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <ProjectGuid>{3150cf76-5cc7-4062-bd6b-632b1058108b}</ProjectGuid>
-    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <OutputType>Library</OutputType>
-    <PackageId>Adeotek.dBASE.NET</PackageId>
-    <PackageTags>netopes,blazor,ui</PackageTags>
-    <Title>NETopes Blazor</Title>
+    <AssemblyName>dBASE.NET</AssemblyName>
+    <Title>Adeotek dBASE .NET</Title>
     <Description>dBASE.NET is a .NET class library used to load dBASE IV .dbf files. The Dbf class reads fields (DbfField) and records (DbfRecord) from a .dbf file. These fields and records can then be accessed as lists and looped over.</Description>
     <Product>dBASE.NET Core</Product>
     <Company>AdeoTEK Software SRL</Company>
     <Authors>Independent Software / Alexander van Oostenrijk / George Benjamin-Schonberger</Authors>
-    <Copyright>Copyright © AdeoTEK Software SRL 2021</Copyright>
-    <AssemblyTitle>dBASE.NET Core</AssemblyTitle>
-    <AssemblyVersion>1.4.0.4</AssemblyVersion>
-    <FileVersion>1.4.0.4</FileVersion>
-    <Version>1.4.0</Version>
-    <PackageProjectUrl>https://github.com/adeotek/dBASE.NET/</PackageProjectUrl>
-    <PackageLicense>https://github.com/adeotek/dBASE.NET/blob/main/README.md</PackageLicense>
+    <Copyright>Copyright © AdeoTEK Software SRL 2022</Copyright>
+    <AssemblyVersion>1.4.1.5</AssemblyVersion>
+    <FileVersion>1.4.1.5</FileVersion>
+    <Version>1.4.1</Version>
+    <PackageId>Adeotek.dBASE.NET</PackageId>
+    <PackageTags>dBASE,dbf</PackageTags>
+    <PackageProjectUrl>https://adeotek.github.io/dBASE.NET/</PackageProjectUrl>
+    <PackageLicense>https://github.com/adeotek/dBASE.NET/blob/main/LICENSE</PackageLicense>
     <RepositoryUrl>https://github.com/adeotek/dBASE.NET/</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageVersion>1.4.0</PackageVersion>
-    <PackageTags>dBASE dbf</PackageTags>
-    <PackageReleaseNotes>.NET 5.0 version</PackageReleaseNotes>
-    <DocumentationFile>bin\$(Configuration)\dBASE.NET.xml</DocumentationFile>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <LangVersion>default</LangVersion>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageVersion>1.4.1</PackageVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
  
   <PropertyGroup>
@@ -41,14 +39,16 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include=".gitignore" />
-    <None Include="ClassDiagram.cd" />
     <None Include="dBASE.NET.key.snk" />
     <None Include="../LICENSE">
       <Pack>True</Pack>
       <PackagePath>/</PackagePath>
     </None>
     <None Include="../assets/PackageIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>/</PackagePath>
+    </None>
+    <None Include="../README.md">
       <Pack>True</Pack>
       <PackagePath>/</PackagePath>
     </None>

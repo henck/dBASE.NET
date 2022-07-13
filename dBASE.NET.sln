@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dBASE.NET", "dBASE.NET\dBASE.NET.csproj", "{3150CF76-5CC7-4062-BD6B-632B1058108B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dBASE.NET", "src\dBASE.NET.csproj", "{3150CF76-5CC7-4062-BD6B-632B1058108B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dBASE.NET.Tests", "tests\dBASE.NET.Tests.csproj", "{8EBDB0B8-CAF5-4FCD-8B6E-29E75CC28D2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7DB1D594-2143-41F6-B054-66ED797D1D5A}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dBASE.NET.Tests", "dBASE.NET.Tests\dBASE.NET.Tests.csproj", "{8EBDB0B8-CAF5-4FCD-8B6E-29E75CC28D2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

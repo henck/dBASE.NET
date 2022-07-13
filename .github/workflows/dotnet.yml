@@ -1,0 +1,31 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal
+    - name: Package
+      run: dotnet pack --no-build --configuration Release src/dBASE.NET.csproj --output .
+    - uses: bbonkr/get-version-action@v1.0.4
+      id: get_version
+      with:
+        project: "src/dBASE.NET.csproj"
+    - name: Publish to NuGet.org
+      run: dotnet nuget push --source "https://api.nuget.org/v3/index.json" --api-key ${{secrets.NUGET_API_KEY}} ./Adeotek.dBASE.NET.${{steps.get_version.outputs.version}}.nupkg
