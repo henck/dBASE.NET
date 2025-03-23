@@ -26,10 +26,14 @@ namespace dBASE.NET
 		internal override void Write(BinaryWriter writer, List<DbfField> fields, List<DbfRecord> records)
 		{
 			this.LastUpdate = DateTime.Now;
-			// Header length = header fields (32b ytes)
-			//               + 32 bytes for each field
-      //               + field descriptor array terminator (1 byte)
-			this.HeaderLength = (ushort)(32 + fields.Count * 32 + 1);
+            // Header length = header fields (32b ytes)
+            //               + 32 bytes for each field
+            //               + field descriptor array terminator (1 byte)
+            // Emanuele Bonin 22/03/2025
+            // For visualFoxPro DBF Table there are other 263 bytes to add to the header
+			// that is the path to the dbc that belong the table (all 0x00 for no databases)
+			bool isVFP = this.Version == DbfVersion.VisualFoxPro || this.Version == DbfVersion.VisualFoxProWithAutoIncrement;
+            this.HeaderLength = (ushort)(32 + fields.Count * 32 + 1 + (isVFP ? 263 : 0));
 			this.NumRecords = (uint)records.Count;
 			this.RecordLength = 1;
 			foreach (DbfField field in fields)

@@ -223,6 +223,15 @@
 
             // Write field descriptor array terminator.
             writer.Write((byte)0x0d);
+
+            // Emanuele Bonin 22/03/2025
+            // For visualFoxPro DBF Table there are other 263 bytes to add to the header
+            // that is the path to the dbc that belong the table (all 0x00 for no databases)
+            bool isVFP = header.Version == DbfVersion.VisualFoxPro || header.Version == DbfVersion.VisualFoxProWithAutoIncrement;
+            if (isVFP) {
+                for (int i = 0; i < 263; i++) writer.Write((byte)0);
+            }
+
         }
 
         private void WriteRecords(BinaryWriter writer)
