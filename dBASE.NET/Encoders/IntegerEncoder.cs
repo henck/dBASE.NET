@@ -15,7 +15,12 @@
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
             int value = 0;
-            if (data != null) value = (int)data;
+            if (data != null) {
+                if (data is decimal)
+                    value = Convert.ToInt32((decimal)data);
+                else 
+                    value = (int)data;
+            }
             return BitConverter.GetBytes(value);
         }
 
