@@ -22,7 +22,7 @@
         internal DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData, Encoding encoding) {
             this.fields = fields;
             Data = new List<object>();
-            
+
             // Read record marker.
             byte marker = reader.ReadByte();
 
@@ -123,7 +123,7 @@
             BinaryWriter Memowriter = new BinaryWriter(stream, Encoding.ASCII);
             BinaryReader Memoreader = new BinaryReader(stream, Encoding.ASCII);
 
-            int BlockSize, FreeBlockPointer;
+            int UsedBlocks, BlockSize, FreeBlockPointer;
 
             // Read 32-bit integer as big endian
             byte[] bytes = Memoreader.ReadBytes(4); // 0x00 - 0x03 next free block
@@ -133,32 +133,38 @@
             bytes = Memoreader.ReadBytes(2);
             Array.Reverse(bytes);
             BlockSize = BitConverter.ToInt16(bytes, 0);
-            // manca la scrttura dei dati e il ritorno del puntatore
-            // aggiornare anche il puntatore al primo blocco libero
+
             // https://www.vfphelp.com/help/_5WN12PC0N.htm
             foreach (DbfField field in fields) {
                 IEncoder encoder = EncoderFactory.GetEncoder(field.Type);
+
                 byte[] buffer = encoder.Encode(field, Data[index], encoding);
                 if (field.Type == DbfFieldType.Memo) {
-                    // Write on memo file
-                    // and get the memo position
-                    Memowriter.Seek(FreeBlockPointer * BlockSize, SeekOrigin.Begin);
-                    Memowriter.Write(BitConverter.GetBytes((int)1).Reverse().ToArray()); // 0x00 - 0x03 Block signature Big Endian
-                                                                                         // (indicates the type of data in the block)
-                                                                                         // 0 – picture (picture field type)
-                                                                                         // 1 – text (memo field type)
 
-                    Memowriter.Write(BitConverter.GetBytes((int)buffer.Length).Reverse().ToArray()); // Length of memo(in bytes) Big Endian
-                    Memowriter.Write(buffer);
-                    int UsedBlocks = (int)Math.Ceiling(buffer.Length / (decimal)BlockSize);
-                    // Fill rest of the used blocks with 0x00
-                    for (int i = 0; i < UsedBlocks * BlockSize - buffer.Length; i++) {
-                        Memowriter.Write((byte)0x00);
-                    }
+                    if (!buffer.All(b => b == 0x20)) {
 
+                        // Write on memo file
+                        // and get the memo position
+                        Memowriter.Seek(FreeBlockPointer * BlockSize, SeekOrigin.Begin);
+                        Memowriter.Write(BitConverter.GetBytes((int)1).Reverse().ToArray()); // 0x00 - 0x03 Block signature Big Endian
+                                                                                             // (indicates the type of data in the block)
+                                                                                             // 0 – picture (picture field type)
+                                                                                             // 1 – text (memo field type)
 
-                    buffer = BitConverter.GetBytes((int)FreeBlockPointer);
-                    FreeBlockPointer = FreeBlockPointer + UsedBlocks;
+                        Memowriter.Write(BitConverter.GetBytes((int)buffer.Length).Reverse().ToArray()); // Length of memo(in bytes) Big Endian
+                        Memowriter.Write(buffer);
+                        UsedBlocks = (int)Math.Ceiling(buffer.Length / (decimal)BlockSize);
+                        // Fill rest of the used blocks with 0x00
+                        for (int i = 0; i < UsedBlocks * BlockSize - buffer.Length; i++) {
+                            Memowriter.Write((byte)0x00);
+                        }
+                        buffer = BitConverter.GetBytes((int)FreeBlockPointer);
+                        FreeBlockPointer = FreeBlockPointer + UsedBlocks;
+                    } else {
+                        UsedBlocks = 0;
+                        buffer = BitConverter.GetBytes((int)0);
+                    }                    
+                    
                 }
                 if (buffer.Length > field.Length)
                     throw new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, "Buffer length has exceeded length of the field.");
@@ -166,7 +172,7 @@
                 index++;
             }
             Memowriter.Seek(0, SeekOrigin.Begin);
-            Memowriter.Write(BitConverter.GetBytes((int)FreeBlockPointer * BlockSize).Reverse().ToArray());
+            Memowriter.Write(BitConverter.GetBytes((int)FreeBlockPointer).Reverse().ToArray());
             Memowriter.Close();
             Memoreader.Close();
 
