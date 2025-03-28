@@ -1,6 +1,7 @@
 ﻿namespace dBASE.NET.Encoders
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
 
     internal class MemoEncoder : IEncoder
@@ -10,11 +11,37 @@
         private MemoEncoder() { }
 
         public static MemoEncoder Instance => instance ?? (instance = new MemoEncoder());
+        
+        // cach different length bytes (for performance)
+        Dictionary<int, byte[]> buffers = new Dictionary<int, byte[]>();
+
+        private byte[] GetBuffer(int length) {
+            if (!buffers.TryGetValue(length, out var bytes)) {
+                var s = new string(' ', length);
+                bytes = Encoding.ASCII.GetBytes(s);
+                buffers.Add(length, bytes);
+            }
+            return (byte[])bytes.Clone();
+        }
 
         /// <inheritdoc />
         public byte[] Encode(DbfField field, object data, Encoding encoding)
         {
-            return null;
+            // Input data maybe various: int, string, whatever.
+            string res = data?.ToString();
+            if (string.IsNullOrEmpty(res)) {
+                res = field.DefaultValue;
+            }
+            // Emanuele Bonin
+            // 24/03/2025
+            int BufferLen = res.Length;
+
+            // consider multibyte should truncate or padding after GetBytes (11 bytes)
+            var buffer = GetBuffer(BufferLen);
+            var bytes = encoding.GetBytes(res);
+            Array.Copy(bytes, buffer, Math.Min(bytes.Length, BufferLen));
+
+            return buffer;
         }
 
         /// <inheritdoc />

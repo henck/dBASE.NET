@@ -38,7 +38,13 @@ namespace dBASE.NET
 		/// </summary>
 		public ushort RecordLength { get; set; }
 
-		public static DbfHeader CreateHeader(DbfVersion version)
+		/// <summary>
+		/// Emanuele Bonin 24/03/2025
+		/// Has a memo field ? (VisualFoxPro)
+		/// </summary>
+		public bool HasMemoField { get; set; }
+
+        public static DbfHeader CreateHeader(DbfVersion version)
 		{
 			DbfHeader header;
 			switch(version)
