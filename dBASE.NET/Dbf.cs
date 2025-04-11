@@ -207,8 +207,10 @@
         }
 
         private void WriteFields(BinaryWriter writer) {
+            int Displacement = 0;
             foreach (DbfField field in Fields) {
-                field.Write(writer, Encoding);
+                field.Write(writer, Encoding, Displacement);
+                Displacement += field.Length;
             }
 
             // Write field descriptor array terminator.
