@@ -111,29 +111,37 @@
             // Emanuele Bonin 22/03/2025
             // VFP MemoFile
             string MemoFile;
-
-            MemoFile = Path.ChangeExtension(ParentDbf.DBFPath, "fpt");
-
+            bool HasMemo = false;
+            FileStream stream = null;
+            BinaryWriter Memowriter = null;
+            BinaryReader Memoreader = null;
+            int UsedBlocks = 0, BlockSize = 0, FreeBlockPointer = 0;
             // Write marker (always "not deleted")
             writer.Write((byte)0x20);
 
             int index = 0;
+            HasMemo = fields.Any(f => f.Type == DbfFieldType.Memo);
+            if (HasMemo) {
+                // Emanuele Bonin 22/03/2025
+                // VFP MemoFile
+                MemoFile = Path.ChangeExtension(ParentDbf.DBFPath, "fpt");
 
-            FileStream stream = File.Open(MemoFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryWriter Memowriter = new BinaryWriter(stream, Encoding.ASCII);
-            BinaryReader Memoreader = new BinaryReader(stream, Encoding.ASCII);
+                stream = File.Open(MemoFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                Memowriter = new BinaryWriter(stream, Encoding.ASCII);
+                Memoreader = new BinaryReader(stream, Encoding.ASCII);
 
-            int UsedBlocks, BlockSize, FreeBlockPointer;
+                
 
-            // Read 32-bit integer as big endian
-            byte[] bytes = Memoreader.ReadBytes(4); // 0x00 - 0x03 next free block
-            Array.Reverse(bytes);
-            FreeBlockPointer = BitConverter.ToInt32(bytes, 0);
-            Memoreader.BaseStream.Seek(6, SeekOrigin.Begin); // 0x06 - 0x07 block size in bytes
-            bytes = Memoreader.ReadBytes(2);
-            Array.Reverse(bytes);
-            BlockSize = BitConverter.ToInt16(bytes, 0);
+                // Read 32-bit integer as big endian
+                byte[] bytes = Memoreader.ReadBytes(4); // 0x00 - 0x03 next free block
+                Array.Reverse(bytes);
+                FreeBlockPointer = BitConverter.ToInt32(bytes, 0);
+                Memoreader.BaseStream.Seek(6, SeekOrigin.Begin); // 0x06 - 0x07 block size in bytes
+                bytes = Memoreader.ReadBytes(2);
+                Array.Reverse(bytes);
+                BlockSize = BitConverter.ToInt16(bytes, 0);
 
+            }
             // https://www.vfphelp.com/help/_5WN12PC0N.htm
             foreach (DbfField field in fields) {
                 IEncoder encoder = EncoderFactory.GetEncoder(field.Type);
@@ -171,11 +179,12 @@
                 writer.Write(buffer);
                 index++;
             }
-            Memowriter.Seek(0, SeekOrigin.Begin);
-            Memowriter.Write(BitConverter.GetBytes((int)FreeBlockPointer).Reverse().ToArray());
-            Memowriter.Close();
-            Memoreader.Close();
-
+            if (HasMemo) {
+                Memowriter.Seek(0, SeekOrigin.Begin);
+                Memowriter.Write(BitConverter.GetBytes((int)FreeBlockPointer).Reverse().ToArray());
+                Memowriter.Close();
+                Memoreader.Close();
+            }
         }
     }
 }
