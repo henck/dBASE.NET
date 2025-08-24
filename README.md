@@ -17,19 +17,19 @@ dBASE.NET is available from [nuget](https://www.nuget.org/packages/dBASE.NET/):
 * Package manager:
 
 ```
-PM> Install-Package dBASE.NET -Version 1.2.2
+PM> Install-Package dBASE.NET -Version 1.2.1
 ```
 
 * .NET CLI:
 
 ```
-> dotnet add package dBASE.NET --version 1.2.2
+> dotnet add package dBASE.NET --version 1.2.1
 ```
    
 * Paket CLI:
 
 ```
-> paket add dBASE.NET --version 1.2.2
+> paket add dBASE.NET --version 1.2.1
 ```
 
 ## Opening a DBF file
