@@ -87,7 +87,7 @@
             reader.ReadBytes(8);
         }
 
-        internal void Write(BinaryWriter writer, Encoding encoding)
+        internal void Write(BinaryWriter writer, Encoding encoding, int Displacement = 0)
         {
             // Pad field name with 0-bytes, then save it.
             string name = this.Name;
@@ -107,7 +107,10 @@
             }
 
             writer.Write((char)Type);
-            writer.Write((uint)0); // 4 reserved bytes: Field data address in memory.
+
+            writer.Write((uint)Displacement); // 4 reserved bytes: Field data address in memory.
+                                   // Displacement of field in record
+
             writer.Write(Length);
             writer.Write(Precision);
             writer.Write((ushort)0); // 2 reserved byte.

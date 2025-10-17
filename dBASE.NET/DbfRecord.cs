@@ -1,8 +1,8 @@
-﻿namespace dBASE.NET
-{
+﻿namespace dBASE.NET {
     using dBASE.NET.Encoders;
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -11,15 +11,15 @@
     /// DbfRecord encapsulates a record in a .dbf file. It contains an array with
     /// data (as an Object) for each field.
     /// </summary>
-    public class DbfRecord
-    {
+    public class DbfRecord {
         private const string defaultSeparator = ",";
         private const string defaultMask = "{name}={value}";
 
+        public Dbf ParentDbf;
+
         private List<DbfField> fields;
 
-        internal DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData, Encoding encoding)
-        {
+        internal DbfRecord(BinaryReader reader, DbfHeader header, List<DbfField> fields, byte[] memoData, Encoding encoding) {
             this.fields = fields;
             Data = new List<object>();
 
@@ -34,8 +34,7 @@
 
             // Read data for each field.
             int offset = 0;
-            foreach (DbfField field in fields)
-            {
+            foreach (DbfField field in fields) {
                 // Copy bytes from record buffer into field buffer.
                 byte[] buffer = new byte[field.Length];
                 Array.Copy(row, offset, buffer, 0, field.Length);
@@ -49,8 +48,7 @@
         /// <summary>
         /// Create an empty record.
         /// </summary>
-        internal DbfRecord(List<DbfField> fields)
-        {
+        internal DbfRecord(List<DbfField> fields) {
             this.fields = fields;
             Data = new List<object>();
             foreach (DbfField field in fields) Data.Add(null);
@@ -60,20 +58,16 @@
 
         public object this[int index] => Data[index];
 
-        public object this[string name]
-        {
-            get
-            {
+        public object this[string name] {
+            get {
                 int index = fields.FindIndex(x => x.Name.Equals(name));
                 if (index == -1) return null;
                 return Data[index];
             }
         }
 
-        public object this[DbfField field]
-        {
-            get
-            {
+        public object this[DbfField field] {
+            get {
                 int index = fields.IndexOf(field);
                 if (index == -1) return null;
                 return Data[index];
@@ -84,8 +78,7 @@
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
-        {
+        public override string ToString() {
             return ToString(defaultSeparator, defaultMask);
         }
 
@@ -94,8 +87,7 @@
         /// </summary>
         /// <param name="separator">Custom separator.</param>
         /// <returns>A string that represents the current object with custom separator.</returns>
-        public string ToString(string separator)
-        {
+        public string ToString(string separator) {
             return ToString(separator, defaultMask);
         }
 
@@ -108,29 +100,90 @@
         /// <para>e.g., "{name}={value}", where {name} is the mask for the field name, and {value} is the mask for the value.</para>
         /// </param>
         /// <returns>A string that represents the current object with custom separator and mask.</returns>
-        public string ToString(string separator, string mask)
-        {
+        public string ToString(string separator, string mask) {
             separator = separator ?? defaultSeparator;
             mask = (mask ?? defaultMask).Replace("{name}", "{0}").Replace("{value}", "{1}");
 
             return string.Join(separator, fields.Select(z => string.Format(mask, z.Name, this[z])));
         }
 
-        internal void Write(BinaryWriter writer, Encoding encoding)
-        {
+        internal void Write(BinaryWriter writer, Encoding encoding) {
+            // Emanuele Bonin 22/03/2025
+            // VFP MemoFile
+            string MemoFile;
+            bool HasMemo = false;
+            FileStream stream = null;
+            BinaryWriter Memowriter = null;
+            BinaryReader Memoreader = null;
+            int UsedBlocks = 0, BlockSize = 0, FreeBlockPointer = 0;
             // Write marker (always "not deleted")
             writer.Write((byte)0x20);
 
             int index = 0;
-            foreach (DbfField field in fields)
-            {
+            HasMemo = fields.Any(f => f.Type == DbfFieldType.Memo);
+            if (HasMemo) {
+                // Emanuele Bonin 22/03/2025
+                // VFP MemoFile
+                MemoFile = Path.ChangeExtension(ParentDbf.DBFPath, "fpt");
+
+                stream = File.Open(MemoFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                Memowriter = new BinaryWriter(stream, Encoding.ASCII);
+                Memoreader = new BinaryReader(stream, Encoding.ASCII);
+
+                
+
+                // Read 32-bit integer as big endian
+                byte[] bytes = Memoreader.ReadBytes(4); // 0x00 - 0x03 next free block
+                Array.Reverse(bytes);
+                FreeBlockPointer = BitConverter.ToInt32(bytes, 0);
+                Memoreader.BaseStream.Seek(6, SeekOrigin.Begin); // 0x06 - 0x07 block size in bytes
+                bytes = Memoreader.ReadBytes(2);
+                Array.Reverse(bytes);
+                BlockSize = BitConverter.ToInt16(bytes, 0);
+
+            }
+            // https://www.vfphelp.com/help/_5WN12PC0N.htm
+            foreach (DbfField field in fields) {
                 IEncoder encoder = EncoderFactory.GetEncoder(field.Type);
+
                 byte[] buffer = encoder.Encode(field, Data[index], encoding);
+                if (field.Type == DbfFieldType.Memo) {
+
+                    if (!buffer.All(b => b == 0x20)) {
+
+                        // Write on memo file
+                        // and get the memo position
+                        Memowriter.Seek(FreeBlockPointer * BlockSize, SeekOrigin.Begin);
+                        Memowriter.Write(BitConverter.GetBytes((int)1).Reverse().ToArray()); // 0x00 - 0x03 Block signature Big Endian
+                                                                                             // (indicates the type of data in the block)
+                                                                                             // 0 – picture (picture field type)
+                                                                                             // 1 – text (memo field type)
+
+                        Memowriter.Write(BitConverter.GetBytes((int)buffer.Length).Reverse().ToArray()); // Length of memo(in bytes) Big Endian
+                        Memowriter.Write(buffer);
+                        UsedBlocks = (int)Math.Ceiling(buffer.Length / (decimal)BlockSize);
+                        // Fill rest of the used blocks with 0x00
+                        for (int i = 0; i < UsedBlocks * BlockSize - buffer.Length; i++) {
+                            Memowriter.Write((byte)0x00);
+                        }
+                        buffer = BitConverter.GetBytes((int)FreeBlockPointer);
+                        FreeBlockPointer = FreeBlockPointer + UsedBlocks;
+                    } else {
+                        UsedBlocks = 0;
+                        buffer = BitConverter.GetBytes((int)0);
+                    }                    
+                    
+                }
                 if (buffer.Length > field.Length)
                     throw new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, "Buffer length has exceeded length of the field.");
-
                 writer.Write(buffer);
                 index++;
+            }
+            if (HasMemo) {
+                Memowriter.Seek(0, SeekOrigin.Begin);
+                Memowriter.Write(BitConverter.GetBytes((int)FreeBlockPointer).Reverse().ToArray());
+                Memowriter.Close();
+                Memoreader.Close();
             }
         }
     }
