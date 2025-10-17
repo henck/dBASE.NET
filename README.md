@@ -37,6 +37,7 @@ PM> Install-Package dBASE.NET -Version 1.2.1
 ```c#
 using dBASE.NET;
 
+Dbf dbf = new Dbf();
 dbf.Read("database.dbf");
 ```
 
